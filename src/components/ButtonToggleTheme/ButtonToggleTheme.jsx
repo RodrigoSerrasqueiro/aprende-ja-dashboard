@@ -1,14 +1,14 @@
 import { useContext } from "react"
 import { ThemeContext } from "../../contexts/ThemeContext";
-import { Button } from "./ButtonToggleTheme.style";
+import { MaterialUISwitch } from "./ButtonToggleTheme.style";
 
 
 function ButtonToggleTheme() {
 
-  const { toggleTheme } = useContext(ThemeContext);
+  const { toggleTheme, darkMode } = useContext(ThemeContext);
 
   return (
-    <Button onClick={toggleTheme}>Alterar tema</Button>
+    <MaterialUISwitch sx={{ m: 1 }} defaultChecked={false} onChange={toggleTheme} darkMode={darkMode} />
   )
 }
 
