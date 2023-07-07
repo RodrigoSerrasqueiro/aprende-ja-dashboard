@@ -8,6 +8,7 @@ const ThemeContext = createContext();
 function ThemeProvider({ children }) {
   const [theme, setTheme] = useState(lightTheme);
   const [darkMode, setDarkMode] = useState(false)
+  const [openMenu, setOpenMenu] = useState(false)
 
   const toggleTheme = () => {
     setTheme(prevTheme => (prevTheme === lightTheme ? darkTheme : lightTheme));
@@ -15,7 +16,7 @@ function ThemeProvider({ children }) {
   };
 
   return (
-    <ThemeContext.Provider value={{ theme, darkMode, toggleTheme }}>
+    <ThemeContext.Provider value={{ theme, darkMode, toggleTheme, openMenu, setOpenMenu }}>
       {children}
     </ThemeContext.Provider>
   );
