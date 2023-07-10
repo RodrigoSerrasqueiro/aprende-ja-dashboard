@@ -3,6 +3,7 @@ import MenuIcon from '@mui/icons-material/Menu';
 import CloseIcon from '@mui/icons-material/Close';
 import { useContext } from "react";
 import { GlobalContext } from "../../contexts/GlobalContext";
+import ButtonToggleTheme from "../ButtonToggleTheme/ButtonToggleTheme";
 
 
 function Header() {
@@ -19,6 +20,7 @@ function Header() {
         </ButtonMenu>
         <Logo>AprendeJá</Logo>
       </LogoContainer>
+      <ButtonToggleTheme />
     </StyledHeader>
   )
 }
