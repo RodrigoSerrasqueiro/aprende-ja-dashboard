@@ -40,7 +40,7 @@ export const ButtonMenu = styled.div`
   }
 
   &:hover {
-    background-color: #DCDEE2;
+    background-color: ${({theme}) => theme.secondaryColor};
   }
 `;
 
