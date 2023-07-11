@@ -7,7 +7,7 @@ function Courses() {
   const { openMenu } = useContext(GlobalContext)
 
   return (
-    <CoursesContainer openMenu={openMenu}>
+    <CoursesContainer openmenu={openMenu ? "true" : "false"}>
       Courses
     </CoursesContainer>
   )

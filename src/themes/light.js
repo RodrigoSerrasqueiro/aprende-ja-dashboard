@@ -2,7 +2,8 @@ const lightTheme = {
   primaryTextColor: '#000000',
   secondaryTextColor: '#03C9D7',
   primaryColor: '#ffffff',
-  secondaryColor: '#f1f1f1',
+  secondaryColor: '#fff',
+  shadowColor: 'rgba(0, 0, 0, 0.15)'
 };
 
 export default lightTheme;

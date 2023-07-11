@@ -8,7 +8,7 @@ function ButtonToggleTheme() {
   const { toggleTheme, darkMode } = useContext(ThemeContext);
 
   return (
-    <MaterialUISwitch sx={{ m: 1 }} defaultChecked={false} onChange={toggleTheme} darkMode={darkMode} />
+    <MaterialUISwitch sx={{ m: 1 }} defaultChecked={false} onChange={toggleTheme} darkmode={darkMode ? "true" : "false"} />
   )
 }
 

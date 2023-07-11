@@ -1,7 +1,7 @@
 import { styled } from '@mui/material/styles';
 import Switch from '@mui/material/Switch';
 
-export const MaterialUISwitch = styled(Switch)(({ darkMode }) => ({
+export const MaterialUISwitch = styled(Switch)(({ darkmode }) => ({
   width: 62,
   height: 34,
   padding: 7,
@@ -19,12 +19,12 @@ export const MaterialUISwitch = styled(Switch)(({ darkMode }) => ({
       },
       '& + .MuiSwitch-track': {
         opacity: 1,
-        backgroundColor: darkMode ? '#8796A5' : '#aab4be', //muda fundo lado esquerdo
+        backgroundColor: darkmode === "true" ? "#8796A5" : "#aab4be", //muda fundo lado esquerdo
       },
     },
   },
   '& .MuiSwitch-thumb': {
-    backgroundColor: darkMode? "#001e3c" : "#e68a00", //muda cor da bolinha
+    backgroundColor: darkmode === "true" ? "#001e3c" : "#e68a00", //muda cor da bolinha
     width: 32,
     height: 32,
     '&:before': {
@@ -43,7 +43,7 @@ export const MaterialUISwitch = styled(Switch)(({ darkMode }) => ({
   },
   '& .MuiSwitch-track': {
     opacity: 1,
-    backgroundColor: darkMode ? '#8796A5' : '#aab4be', //muda fundo lado direito
+    backgroundColor: darkmode === "true" ? "#8796A5" : "#aab4be", //muda fundo lado direito
     borderRadius: 20 / 2,
   },
 }));

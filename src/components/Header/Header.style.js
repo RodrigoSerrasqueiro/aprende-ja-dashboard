@@ -7,7 +7,8 @@ export const StyledHeader = styled.header`
   justify-content: space-between;
   padding: 0 50px;
   background-color: ${({theme}) => theme.primaryColor};
-  box-shadow: 0 5px 7px 0 rgba(0, 0, 0, 0.15);
+  box-shadow: 0 5px 7px 0 ${({theme}) => theme.shadowColor};
+  position: fixed;
 `;
 
 export const LogoContainer = styled.div`

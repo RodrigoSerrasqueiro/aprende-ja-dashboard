@@ -7,7 +7,7 @@ function Home() {
   const { openMenu } = useContext(GlobalContext)
 
   return (
-    <HomeContainer openMenu={openMenu}>
+    <HomeContainer openmenu={openMenu ? "true" : "false"}>
       Home
     </HomeContainer>
   )

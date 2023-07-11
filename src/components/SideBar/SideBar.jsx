@@ -8,7 +8,7 @@ function SideBar() {
   const { openMenu } = useContext(GlobalContext)
 
   return (
-    <SideBarContainer openMenu={openMenu}>
+    <SideBarContainer openmenu={openMenu ? "true" : "false"}>
 
     </SideBarContainer>
   )
