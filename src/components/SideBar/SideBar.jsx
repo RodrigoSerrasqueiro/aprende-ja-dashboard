@@ -1,5 +1,6 @@
 import { NavContainer, NavText, SectionTitle, SideBarContainer, TitleContainer } from "./SideBar.style";
 import { useContext } from "react";
+import { useNavigate } from "react-router-dom";
 import { GlobalContext } from "../../contexts/GlobalContext";
 import PersonAddOutlinedIcon from '@mui/icons-material/PersonAddOutlined';
 import EditOutlinedIcon from '@mui/icons-material/EditOutlined';
@@ -15,7 +16,9 @@ import ManageSearchOutlinedIcon from '@mui/icons-material/ManageSearchOutlined';
 
 function SideBar() {
 
-  const { openMenu } = useContext(GlobalContext)
+  const { openMenu } = useContext(GlobalContext);
+
+  const navigate = useNavigate()
 
   return (
     <SideBarContainer openmenu={openMenu ? "true" : "false"}>
@@ -24,7 +27,7 @@ function SideBar() {
         <SectionTitle>USUÁRIOS</SectionTitle>
       </TitleContainer>
 
-      <NavContainer>
+      <NavContainer onClick={() => navigate('/new-user')}>
         <PersonAddOutlinedIcon />
         <NavText>Novo usuário</NavText>
       </NavContainer>
@@ -53,7 +56,7 @@ function SideBar() {
         <SectionTitle>CURSOS</SectionTitle>
       </TitleContainer>
 
-      <NavContainer>
+      <NavContainer onClick={() => navigate('/new-course')}>
         <CreateNewFolderOutlinedIcon />
         <NavText>Novo curso</NavText>
       </NavContainer>

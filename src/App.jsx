@@ -6,7 +6,9 @@ import Header from "./components/Header/Header";
 import SideBar from "./components/SideBar/SideBar";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
-import Courses from "./pages/Courses/Courses";
+import NewUser from "./pages/Users/NewUser/NewUser";
+import NewCourse from "./pages/Courses/NewCourse/NewCourse";
+
 
 function App() {
 
@@ -20,7 +22,8 @@ function App() {
         <SideBar />
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/courses" element={<Courses />} />
+          <Route path="/new-user" element={<NewUser />} />
+          <Route path="/new-course" element={<NewCourse />} />
         </Routes>
       </ThemeProvider>
     </BrowserRouter>

@@ -29,10 +29,16 @@ export const NavContainer = styled.div`
   display: flex;
   align-items: center;
   border-radius: 8px;
+  color: ${({theme}) => theme.navTextColor};
   
   &:hover {
     cursor: pointer;
     background-color: ${({theme}) => theme.terciaryColor};
+    color: ${({theme}) => theme.navTextColorHover};
+
+    > svg {
+      color: ${({ theme }) => theme.iconColorHover};
+    }
   }
 
   >svg {
@@ -47,5 +53,5 @@ export const SectionTitle = styled.p`
 `;
 
 export const NavText = styled.p`
-  color: ${({theme}) => theme.navTextColor};
+  
 `;

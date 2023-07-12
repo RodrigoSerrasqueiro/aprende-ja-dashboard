@@ -34,7 +34,7 @@ export const GlobalStyles = createGlobalStyle`
 
   *{
     scrollbar-width: 7px;
-    scrollbar-color: rgba(0,0,0,0.15);
+    scrollbar-color: ${({theme}) => theme.scrollBarColor};
   }
 
   *::-webkit-scrollbar{
@@ -42,7 +42,7 @@ export const GlobalStyles = createGlobalStyle`
     }
     
   *::-webkit-scrollbar-thumb{
-    background-color: rgba(0,0,0,0.15);
+    background-color: ${({theme}) => theme.scrollBarColor};
     border-radius: 20px;
   }
 `

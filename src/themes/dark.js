@@ -6,7 +6,11 @@ const darkTheme = {
   secondaryColor: '#33373E',
   terciaryColor: '#ffffff',
   shadowColor: 'rgba(0, 0, 0, 0.3)',
-  iconColor: '#374151'
+  iconColor: '#E5E7EB',
+  iconColorHover: '#000000',
+  navTextColor: '#E5E7EB',
+  navTextColorHover: '#000000',
+  scrollBarColor: 'rgba(255,255,255,0.5)',
 };
 
 export default darkTheme;

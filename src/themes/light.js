@@ -7,7 +7,10 @@ const lightTheme = {
   terciaryColor: '#f2f2f2',
   shadowColor: 'rgba(0, 0, 0, 0.15)',
   iconColor: '#374151',
-  navTextColor: '#394353'
+  iconColorHover: '#374151',
+  navTextColor: '#394353',
+  navTextColorHover: '#394353',
+  scrollBarColor: 'rgba(0,0,0,0.15)',
 };
 
 export default lightTheme;
