@@ -33,16 +33,16 @@ export const GlobalStyles = createGlobalStyle`
   }
 
   *{
-    scrollbar-width: 10px;
-    scrollbar-color: #8c8c8c;
+    scrollbar-width: 7px;
+    scrollbar-color: rgba(0,0,0,0.15);
   }
 
   *::-webkit-scrollbar{
-      width: 8px;
+      width: 5px;
     }
     
   *::-webkit-scrollbar-thumb{
-    background-color: #8c8c8c;
+    background-color: rgba(0,0,0,0.15);
     border-radius: 20px;
   }
 `
