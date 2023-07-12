@@ -5,7 +5,7 @@ export const SideBarContainer = styled.div`
   flex-direction: column;
   padding: 20px 10px 0 20px;
   position: fixed;
-  top: 70px;
+  top: 71px;
   left: ${({ openmenu }) => (openmenu === "true" ? "0" : "-310px")};
   width: 300px;
   max-height: calc(100vh - 70px);
