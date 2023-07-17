@@ -8,6 +8,7 @@ import { BrowserRouter, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home/Home";
 import NewUser from "./pages/Users/NewUser/NewUser";
 import NewCourse from "./pages/Courses/NewCourse/NewCourse";
+import { ApiStorage } from "./contexts/ApiContext";
 
 
 function App() {
@@ -16,16 +17,18 @@ function App() {
 
   return (
     <BrowserRouter>
-      <ThemeProvider theme={theme}>
-        <GlobalStyles />
-        <Header />
-        <SideBar />
-        <Routes>
-          <Route path="/" element={<Home />} />
-          <Route path="/new-user" element={<NewUser />} />
-          <Route path="/new-course" element={<NewCourse />} />
-        </Routes>
-      </ThemeProvider>
+      <ApiStorage>
+        <ThemeProvider theme={theme}>
+          <GlobalStyles />
+          <Header />
+          <SideBar />
+          <Routes>
+            <Route path="/" element={<Home />} />
+            <Route path="/new-user" element={<NewUser />} />
+            <Route path="/new-course" element={<NewCourse />} />
+          </Routes>
+        </ThemeProvider>
+      </ApiStorage>
     </BrowserRouter>
   )
 }

@@ -1,31 +1,73 @@
-import React, { useContext } from "react"
+import React, { useContext, useState } from "react"
 import { GlobalContext } from "../../../contexts/GlobalContext"
 import { NewUserContainer } from "./NewUser.style"
+import { ApiContext } from "../../../contexts/ApiContext"
 
 function NewUser() {
 
-  const { openMenu } = useContext(GlobalContext)
-  const [nome, setNome] = React.useState('')
+  const {createUser} = useContext(ApiContext)
+  const [userType, setUserType] = useState('')
+  const [userName, setUserName] = useState('')
+  const [email, setEmail] = useState('')
+  const [cpf, setCpf] = useState('')
+
+const handleUser = () =>{
+  createUser(userType, userName, email, cpf)
+   
+} 
+
+const{openMenu} = useContext(GlobalContext)
+
+
+
 
   return (
     <NewUserContainer openmenu={openMenu ? "true" : "false"}>
-      <form>
+     
+    Nome
+          <span>tipo</span>
+          <input
+      
+          type="text"
+         
+          onChange={(event) => setUserType(event.target.value)}  />
+          <hr />
 
-    
-          <label htmlFor="nome">Nome</label>
+          <span>nome</span>
+          <input
+          type="text"
+          onChange={(event) =>setUserName(event.target.value)}  />
+          <hr />
+
+          <span>email</span>
+          <input
+         
+          type="text"
+         
+          onChange={(event) =>setEmail(event.target.value)}  />
+          <hr />
+
+          <span>cpf</span>
           <input
           id="nome"
           type="text"
-          value={nome}
-          onChange={(event) =>setNome(event.target.value)}  />
-          <button>enviar</button>
+         
+          onChange={(event) =>setCpf(event.target.value)}  />
+          <hr />
+          
+
+        
+          
+
+
+          <button onClick={handleUser}>enviar</button>
 
 
     
        
       
 
-      </form>
+ 
 
     </NewUserContainer>
   )
