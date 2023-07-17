@@ -8,7 +8,7 @@ function NewCourse() {
 
   return (
     <NewCourseContainer openmenu={openMenu ? "true" : "false"}>
-      Novo curso
+      Novo curso a
     </NewCourseContainer>
   )
 }
