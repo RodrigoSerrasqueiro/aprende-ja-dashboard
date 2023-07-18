@@ -9,8 +9,9 @@ export const NewCourseContainer = styled.div`
   color: ${({theme}) => theme.primaryTextColor};
   padding: ${({openmenu}) => (openmenu === "true" ? "75px 0 0 310px" : "75px 0 0 10px" )};
   transition: .8s;
+  row-gap: 10px;
 
-  > input {
+  > input, select{
     width: 300px;
     height: 35px;
     font-size: 18px;

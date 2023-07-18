@@ -26,13 +26,26 @@ export const ApiStorage = ({ children }) => {
     }
   };
 
-  const createCourse = async (courseType, courseSubType, courseName, courseDescription) => {
+  const createCourse = async (
+    courseType,
+    courseSubType,
+    courseName,
+    courseImage,
+    courseDescription,
+    courseWorkload,
+    teacherName,
+    courseLevel
+  ) => {
     try {
       const response = await api.post('courses/create-course', {
         courseType,
         courseSubType,
         courseName,
+        courseImage,
         courseDescription,
+        courseWorkload,
+        teacherName,
+        courseLevel
       }, {
         headers: {
           'Content-Type': 'application/json'
