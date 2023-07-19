@@ -28,16 +28,19 @@ function NewCourse() {
       </Modal>
 
       <button style={{ width: "40px" }} onClick={addNewCourse}>Novo</button>
-
-      <CoursesContent>
-        {courses.slice(0).reverse().map((course, index) => (
-          <CourseCard
-            key={index}
-            courseImage={course.courseImage}
-            courseName={course.courseName}
-          />
-        ))}
-      </CoursesContent>
+      {courses && courses.length > 0 ?
+        <CoursesContent>
+          {courses.slice(0).reverse().map((course, index) => (
+            <CourseCard
+              key={index}
+              courseImage={course.courseImage}
+              courseName={course.courseName}
+            />
+          ))}
+        </CoursesContent>
+        :
+        <h1>NÃO HÁ CURSOS CADASTRADOS</h1>
+      }
     </NewCourseContainer>
   )
 }
