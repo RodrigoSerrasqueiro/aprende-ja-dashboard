@@ -1,5 +1,6 @@
 import { createContext, useState } from "react";
 import api from '../api'
+import axios from 'axios'
 
 export const ApiContext = createContext({});
 
@@ -7,6 +8,8 @@ export const ApiContext = createContext({});
 export const ApiStorage = ({ children }) => {
   const [videoURL, setVideoURL] = useState("")
   const [lessonID, setLessonID] = useState("")
+  const [courses, setCourses] = useState([])
+  const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
   const uploadVideo = async (video) => {
     try {
@@ -25,6 +28,24 @@ export const ApiStorage = ({ children }) => {
       alert('Não foi possível fazer o upload do vídeo!');
     }
   };
+
+  const getCourses = async () => {
+    const url = 'http://localhost:4000/courses/get-courses'
+    try {
+      const response = await axios.get(url)
+      setCourses(response.data)
+    } catch (erro) {
+      console.log(erro)
+    }
+  }
+
+  const addNewCourse = () => {
+    setOpenModalNewCourse(true)
+  }
+
+  const closeModalNewCourse = () => {
+    setOpenModalNewCourse(false)
+  }
 
   const createCourse = async (
     courseType,
@@ -54,6 +75,8 @@ export const ApiStorage = ({ children }) => {
 
       if (response.status === 201) {
         alert("Curso cadastrado com sucesso!");
+        getCourses()
+        closeModalNewCourse()
       }
     } catch (error) {
       console.log(error);
@@ -67,6 +90,11 @@ export const ApiStorage = ({ children }) => {
       createCourse,
       videoURL,
       lessonID,
+      getCourses,
+      courses,
+      closeModalNewCourse,
+      addNewCourse,
+      openModalNewCourse,
     }}>
       {children}
     </ApiContext.Provider>

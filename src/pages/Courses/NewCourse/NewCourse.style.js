@@ -9,23 +9,37 @@ export const NewCourseContainer = styled.div`
   color: ${({theme}) => theme.primaryTextColor};
   padding: ${({openmenu}) => (openmenu === "true" ? "75px 0 0 310px" : "75px 0 0 10px" )};
   transition: .8s;
-  row-gap: 10px;
+`;
 
-  > input, select{
-    width: 300px;
-    height: 35px;
-    font-size: 18px;
-  }
-  > button {
-    width: 100px;
-    height: 35px;
-    margin-top: 20px;
-  }
+export const Modal = styled.div`
+  visibility: ${({openmodal}) => (openmodal === "true" ? "visible" : "hidden" )};;
+  width: 100vw;
+  height: 100vh;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: rgba(0,0,0,0.5);
+`;
 
-  &:hover {
-    > button {
-      cursor: pointer;
-    }
-  }
+export const ModalContent = styled.div`
+  width: 50%;
+  height: 80%;
+  background-color: #fff;
+  border-radius: 8px;
+  overflow-y: scroll;
+  padding: 20px;
+`;
+
+export const CoursesContent = styled.div`
+  width: 100%;
+  display: flex;
+  padding: 60px;
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 15px;
 `;
 
