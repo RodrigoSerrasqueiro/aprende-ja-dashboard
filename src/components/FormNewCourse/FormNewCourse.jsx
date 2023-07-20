@@ -1,9 +1,12 @@
 import { useContext, useState } from "react"
 import { ApiContext } from "../../contexts/ApiContext"
 import { FormContainer } from "./FormNewCourse.style";
-import ReactS3 from 'react-s3'
+
+
+
 
 function FormNewCourse() {
+
   const { createCourse } = useContext(ApiContext)
 
   const [courseType, setCourseType] = useState("");
@@ -15,26 +18,13 @@ function FormNewCourse() {
   const [teacherName, setTeacherName] = useState("");
   const [courseLevel, setCourseLevel] = useState("");
 
-  const config = {
-    bucketName: 'aprende-ja',
-    albumName: 'course-images',
-    region: 'sa-east-1',
-    accessKeyId: 'AKIA3FNFZWIHA6RAHIHQ',
-    secretAccessKey: "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"
-  }
+
 
   const handleImage = (e) => {
     setCourseImage(e.target.files[0])
   }
 
-  const uploadImage = async () => {
-    try {
-      const response = await ReactS3.uploadFile(courseImage, config)
-      console.log(response)
-    } catch (error) {
-      console.log(error)
-    }
-  }
+
 
   const handleCourse = () => {
     createCourse(courseType, courseSubType, courseName, courseImage, courseDescription, courseWorkload, teacherName, courseLevel)
@@ -64,7 +54,7 @@ function FormNewCourse() {
 
       <span>IMAGEM DO CURSO</span>
       <input type="file" onChange={handleImage} />
-      <button onClick={uploadImage}>upload</button>
+
 
       <span>DESCRIÇÃO DO CURSO</span>
       <input type="text" onChange={(e) => setCourseDescription(e.target.value)} />
