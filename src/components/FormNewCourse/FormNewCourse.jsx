@@ -7,7 +7,7 @@ import { FormContainer } from "./FormNewCourse.style";
 
 function FormNewCourse() {
 
-  const { createCourse } = useContext(ApiContext)
+  const { createCourse, uploadImage, imageURL } = useContext(ApiContext)
 
   const [courseType, setCourseType] = useState("");
   const [courseSubType, setCourseSubType] = useState("");
@@ -24,10 +24,17 @@ function FormNewCourse() {
     setCourseImage(e.target.files[0])
   }
 
+  const sendImage = () => {
+    if (!courseImage) {
+      return;
+    }
+    uploadImage(courseImage)
+  }
+
 
 
   const handleCourse = () => {
-    createCourse(courseType, courseSubType, courseName, courseImage, courseDescription, courseWorkload, teacherName, courseLevel)
+    createCourse(courseType, courseSubType, courseName, imageURL, courseDescription, courseWorkload, teacherName, courseLevel)
   }
 
   return (
@@ -54,6 +61,12 @@ function FormNewCourse() {
 
       <span>IMAGEM DO CURSO</span>
       <input type="file" onChange={handleImage} />
+      <button onClick={sendImage}>enviar</button>
+      {imageURL === "" ?
+        <span>aguarde o upload</span>
+        :
+        <img style={{ width: "100px", height: "auto" }} alt="imagem do curso" src={imageURL} />
+      }
 
 
       <span>DESCRIÇÃO DO CURSO</span>
