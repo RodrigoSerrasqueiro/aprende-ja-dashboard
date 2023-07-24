@@ -1,13 +1,15 @@
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { ApiContext } from "../../../contexts/ApiContext";
 import { GlobalContext } from "../../../contexts/GlobalContext";
-import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModuleEdit, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer } from "./NewModuleOrLesson.style";
+import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer } from "./NewModuleOrLesson.style";
+import ModulesToolBar from "../../../components/ModulesToolBar/ModulesTollBar";
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 function NewModuleOrLesson() {
   const { course, modules } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
 
-  const [openModulesList, setOpenModulesList] = useState(true)
+
 
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
@@ -21,12 +23,14 @@ function NewModuleOrLesson() {
         <CourseModulesContainer>
           <ModulesContent>
             <ModulesOptions>
-              <span>Modules</span>
-              <button>Adicionar módulo</button>
-              <button onClick={() => setOpenModulesList(!openModulesList)}>{openModulesList ? "Fechar" : "Abrir"}</button>
+              <span>Módulos</span>
+              <button>
+                <AddBoxIcon />
+                Adicionar
+              </button>
             </ModulesOptions>
 
-            <ModulesList openmoduleslist={openModulesList ? "true" : "false"}>
+            <ModulesList>
               {modules && modules.length < 1 ?
                 (
                   <span>Não há módulos</span>
@@ -34,11 +38,11 @@ function NewModuleOrLesson() {
                 :
                 (
                   modules.map((module) => (
-                    <ModuleEdit key={module.moduleID}>
-                      <span>{module.moduleName}</span>
-                      <button>ver aulas</button>
-                      <button>Adicionar aula</button>
-                    </ModuleEdit>
+                    <ModulesToolBar
+                      key={module.moduleID}
+                      moduleName={module.moduleName}
+                      numberOfLessons={`${module.lessons.length} aulas`}
+                    />
                   ))
                 )
               }
