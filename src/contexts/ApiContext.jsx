@@ -71,12 +71,33 @@ export const ApiStorage = ({ children }) => {
     }
   }
 
+
+  const uploadUsers = async (users) => {
+    console.log(users)
+    try {
+      const response = await api.post('users/create-users', users, {
+        headers:{
+          'Content-Type': 'application/json'
+        }
+      });
+
+      if (response.status === 201) {
+        alert("Usuários inseridos com sucesso");
+      }
+    }
+    catch (error) {
+      console.log(error);
+      alert("Erro ao cadastrar usuário");
+    }
+  }
+
   return (
     <ApiContext.Provider value={{
       uploadVideo,
       createCourse,
       videoURL,
       lessonID,
+      uploadUsers,
       createUser
     }}>
       {children}
