@@ -4,9 +4,9 @@ import { GlobalContext } from "../../../contexts/GlobalContext";
 import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModuleEdit, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer } from "./NewModuleOrLesson.style";
 
 function NewModuleOrLesson() {
-  const { course } = useContext(ApiContext)
+  const { course, modules } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
-  const modules = course.modules
+
   const [openModulesList, setOpenModulesList] = useState(true)
 
   return (
@@ -39,7 +39,6 @@ function NewModuleOrLesson() {
                       <button>ver aulas</button>
                       <button>Adicionar aula</button>
                     </ModuleEdit>
-
                   ))
                 )
               }

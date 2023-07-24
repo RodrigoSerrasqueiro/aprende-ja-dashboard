@@ -11,6 +11,8 @@ export const ApiStorage = ({ children }) => {
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
   const [course, setCourse] = useState({})
+  const [modules, setModules] = useState([])
+  const [lessons, setLessons] = useState([])
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
 
@@ -71,7 +73,10 @@ export const ApiStorage = ({ children }) => {
     try {
       const response = await axios.get(url)
       setCourse(response.data)
-      console.log(response.data)
+      const modules = response.data.modules
+      setModules(modules)
+      setLessons(modules.lessons)
+
     } catch (error) {
       console.log(error)
     }
@@ -126,6 +131,8 @@ export const ApiStorage = ({ children }) => {
       newModuleOrLesson,
       course,
       courses,
+      modules,
+      lessons,
       closeModalNewCourse,
       addNewCourse,
       openModalNewCourse,
