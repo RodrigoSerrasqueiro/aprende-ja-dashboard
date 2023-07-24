@@ -9,6 +9,7 @@ import Home from "./pages/Home/Home";
 import NewUser from "./pages/Users/NewUser/NewUser";
 import NewCourse from "./pages/Courses/NewCourse/NewCourse";
 import { ApiStorage } from "./contexts/ApiContext";
+import NewModuleOrLesson from "./pages/Courses/NewModuleOrLesson/NewModuleOrLesson";
 
 
 function App() {
@@ -26,6 +27,7 @@ function App() {
             <Route path="/" element={<Home />} />
             <Route path="/new-user" element={<NewUser />} />
             <Route path="/new-course" element={<NewCourse />} />
+            <Route path="/new-module-or-lesson" element={<NewModuleOrLesson />} />
           </Routes>
         </ThemeProvider>
       </ApiStorage>

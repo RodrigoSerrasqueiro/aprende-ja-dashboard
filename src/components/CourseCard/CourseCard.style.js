@@ -16,6 +16,10 @@ export const CourseName = styled.span`
   color: ${({theme}) => theme.primaryTextColor};
   font-weight: bold;
   margin-left: 10px;
+  display: block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 `;
 
 export const ButtonsContainer = styled.div`

@@ -10,6 +10,7 @@ export const ApiStorage = ({ children }) => {
   const [imageURL, setImageURL] = useState("")
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
+  const [course, setCourse] = useState({})
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
 
@@ -64,6 +65,18 @@ export const ApiStorage = ({ children }) => {
     setOpenModalNewCourse(false)
   }
 
+  const newModuleOrLesson = async (courseID) => {
+    const url = `http://localhost:4000/courses/get-course/${courseID}`
+
+    try {
+      const response = await axios.get(url)
+      setCourse(response.data)
+      console.log(response.data)
+    } catch (error) {
+      console.log(error)
+    }
+  }
+
   const createCourse = async (
     courseType,
     courseSubType,
@@ -110,6 +123,8 @@ export const ApiStorage = ({ children }) => {
       imageURL,
       lessonID,
       getCourses,
+      newModuleOrLesson,
+      course,
       courses,
       closeModalNewCourse,
       addNewCourse,

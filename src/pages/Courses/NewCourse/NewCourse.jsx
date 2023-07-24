@@ -35,6 +35,7 @@ function NewCourse() {
               key={index}
               courseImage={course.courseImage}
               courseName={course.courseName}
+              courseID={course.courseID}
             />
           ))}
         </CoursesContent>
