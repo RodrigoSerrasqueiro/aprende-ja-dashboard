@@ -258,3 +258,56 @@ export const NewModuleModal = styled.div`
     align-items: center;
   }
 `;
+
+export const NewLessonModal = styled.div`
+  width: 700px;
+  height: 500px;
+  display: ${({isopen}) => isopen === "true" ? "flex" : "none"};
+  flex-direction: column;
+  row-gap: 10px;
+  padding: 10px;
+  background-color: ${({theme}) => theme.primaryColor};
+  border-radius: 8px;
+  position: fixed;
+  z-index: 2;
+  top: 40vh;
+  left: 50vw;
+  transform: translate(-50%, -50%);
+  border: 2px solid ${({theme}) => theme.secondaryTextColor};
+
+  > div {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+
+    > span {
+      font-size: 1.5rem;
+      font-weight: 500;
+    }
+    > svg {
+      color: ${({theme}) => theme.secondaryTextColor};
+      cursor: pointer;
+    }
+  }
+
+  > input {
+    width: 100%;
+    height: 35px;
+    border: 1px solid ${({theme}) => theme.primaryTextColor};
+  }
+
+  > button {
+    width: 150px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: ${({theme}) => theme.buttonColor};
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+`;

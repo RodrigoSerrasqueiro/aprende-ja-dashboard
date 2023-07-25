@@ -2,7 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../contexts/GlobalContext";
 import { ApiContext } from "../../../contexts/ApiContext";
 import axios from 'axios'
-import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer, NewModuleModal } from "./NewModuleOrLesson.style";
+import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer, NewModuleModal, NewLessonModal } from "./NewModuleOrLesson.style";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -11,16 +11,24 @@ import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
+import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
 
 function NewModuleOrLesson() {
 
   const { openMenu } = useContext(GlobalContext)
-  const { addModuleToCourse } = useContext(ApiContext)
+  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo } = useContext(ApiContext)
   const [moduleModalIsOpen, setModuleModalIsOpen] = useState(false)
+  const [lessonModalIsOpen, setLessonModalIsOpen] = useState(false)
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
   const [moduleName, setModuleName] = useState("")
   const [dataUpdated, setDataUpdated] = useState(false);
+  const [currentModule, setCurrentModule] = useState("")
+  const [lessonTitle, setLessonTitle] = useState("")
+  const [lessonDescription, setLessonDescription] = useState("")
+  const [lessonVideo, setLessonVideo] = useState("")
+  const [isLoading, setIsLoading] = useState(false)
+
 
 
   async function load() {
@@ -66,6 +74,30 @@ function NewModuleOrLesson() {
     setDataUpdated(true)
   }
 
+  const openLessonModal = (moduleID) => {
+    setLessonModalIsOpen(true)
+    setCurrentModule(moduleID)
+  }
+
+  const handleVideoFile = (e) => {
+    setLessonVideo(e.target.files[0])
+  }
+
+  const sendVideoFile = () => {
+    if (!lessonVideo) {
+      return;
+    }
+    uploadVideo(lessonVideo)
+    setIsLoading(true)
+  }
+
+  const newLesson = () => {
+    if (!course || !currentModule || !lessonID || !lessonTitle || !lessonDescription || !videoURL) {
+      alert("Faltam dados")
+      return;
+    }
+    addLessonToModule(course.courseID, currentModule, lessonID, lessonTitle, lessonDescription, videoURL)
+  }
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
       <NewModuleModal isopen={moduleModalIsOpen ? "true" : "false"}>
@@ -73,9 +105,35 @@ function NewModuleOrLesson() {
           <span>Nome do módulo:</span>
           <CloseIcon onClick={() => setModuleModalIsOpen(false)} />
         </div>
-        <input type="text" onChange={(e) => setModuleName(e.target.value)}></input>
+        <input type="text" onChange={(e) => setModuleName(e.target.value)} />
         <button onClick={newModule}>Adicionar módulo</button>
       </NewModuleModal>
+      <NewLessonModal isopen={lessonModalIsOpen ? "true" : "false"}>
+        <div>
+          <span>Preencha os dados da nova aula:</span>
+          <CloseIcon onClick={() => setLessonModalIsOpen(false)} />
+        </div>
+        <span>Título da aula:</span>
+        <input type="text" onChange={(e) => setLessonTitle(e.target.value)} />
+
+        <span>Descrição da aula:</span>
+        <input type="text" maxLength={300} onChange={(e) => setLessonDescription(e.target.value)} />
+
+        <span>Selecione o vídeo da aula:</span>
+        <input type="file" onChange={handleVideoFile} />
+        <button onClick={sendVideoFile}>ENVIAR</button>
+        {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
+        {videoURL &&
+          <iframe
+            src={videoURL}
+            title="Video Player"
+            width="400"
+            height="200"
+            allowfullscreen
+          ></iframe>
+        }
+        <button onClick={newLesson}>ADICIONAR AULA</button>
+      </NewLessonModal>
       <CourseContent>
 
         <CourseImageContainer>
@@ -112,7 +170,7 @@ function NewModuleOrLesson() {
                         </ModuleNameContainer>
                         <LessonsCounter>{`${module.lessons.length} aulas`}</LessonsCounter>
                         <ButtonsContainer>
-                          <AddCircleIcon />
+                          <AddCircleIcon onClick={() => openLessonModal(module.moduleID)} />
                           <EditIcon />
                           <DeleteIcon />
                         </ButtonsContainer>
