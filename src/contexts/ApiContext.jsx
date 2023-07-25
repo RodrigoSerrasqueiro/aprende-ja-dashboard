@@ -20,7 +20,6 @@ export const ApiStorage = ({ children }) => {
       const response = await api.post('/videos/upload', formData);
       if (response.status === 200) {
         alert("Upload realizado com sucesso!")
-        console.log(response)
         setVideoURL(response.data.videoData.video_player)
         setLessonID(response.data.videoData.id)
       }

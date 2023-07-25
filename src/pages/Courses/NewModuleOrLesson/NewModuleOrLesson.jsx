@@ -63,15 +63,24 @@ function NewModuleOrLesson() {
     }));
   };
 
-  const newModule = () => {
+  const newModule = async () => {
     if (!moduleName) {
-      alert("De um nome ao novo módulo!")
+      alert("De um nome ao novo módulo!");
       return;
     }
-    addModuleToCourse(course.courseID, moduleName)
-    setModuleModalIsOpen(false)
-    setUpdateCounter((prevCounter) => prevCounter + 1);
-  }
+
+    try {
+      // Adiciona o módulo
+      await addModuleToCourse(course.courseID, moduleName);
+
+      // Atualiza o contador somente após a conclusão da operação assíncrona
+      setModuleModalIsOpen(false);
+      setUpdateCounter((prevCounter) => prevCounter + 1);
+    } catch (error) {
+      console.error("Erro ao adicionar o módulo:", error);
+      // Trate o erro adequadamente aqui (exibir uma mensagem de erro, etc.)
+    }
+  };
 
   const openLessonModal = (moduleID) => {
     setLessonModalIsOpen(true)
@@ -90,15 +99,26 @@ function NewModuleOrLesson() {
     setIsLoading(true)
   }
 
-  const newLesson = () => {
+  const newLesson = async () => {
     if (!course || !currentModule || !lessonID || !lessonTitle || !lessonDescription || !videoURL) {
-      alert("Faltam dados")
+      alert("Faltam dados");
       return;
     }
-    addLessonToModule(course.courseID, currentModule, lessonID, lessonTitle, lessonDescription, videoURL)
-    setLessonModalIsOpen(false)
-    setUpdateCounter((prevCounter) => prevCounter + 1);
-  }
+
+    try {
+      // Adiciona a aula
+      await addLessonToModule(course.courseID, currentModule, lessonID, lessonTitle, lessonDescription, videoURL);
+
+      // Atualiza o contador somente após a conclusão da operação assíncrona
+      setLessonModalIsOpen(false);
+      setUpdateCounter((prevCounter) => prevCounter + 1);
+    } catch (error) {
+      console.error("Erro ao adicionar a aula:", error);
+      // Trate o erro adequadamente aqui (exibir uma mensagem de erro, etc.)
+    }
+  };
+
+
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
       <NewModuleModal isopen={moduleModalIsOpen ? "true" : "false"}>
