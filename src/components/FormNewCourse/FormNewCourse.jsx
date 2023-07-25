@@ -1,9 +1,7 @@
 import { useContext, useState } from "react"
 import { ApiContext } from "../../contexts/ApiContext"
 import { FormContainer } from "./FormNewCourse.style";
-
-
-
+import InputDropZone from "../InputDropZone/InputDropZone";
 
 function FormNewCourse() {
 
@@ -17,12 +15,6 @@ function FormNewCourse() {
   const [courseWorkload, setCourseWorkload] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [courseLevel, setCourseLevel] = useState("");
-
-
-
-  const handleImage = (e) => {
-    setCourseImage(e.target.files[0])
-  }
 
   const sendImage = () => {
     if (!courseImage) {
@@ -60,7 +52,7 @@ function FormNewCourse() {
       <input type="text" onChange={(e) => setCourseName(e.target.value)} />
 
       <span>IMAGEM DO CURSO</span>
-      <input type="file" onChange={handleImage} />
+      <InputDropZone setSelectedFile={setCourseImage} acceptedFileType="image/*" />
       <button onClick={sendImage}>enviar</button>
       {imageURL === "" ?
         <span>aguarde o upload</span>
