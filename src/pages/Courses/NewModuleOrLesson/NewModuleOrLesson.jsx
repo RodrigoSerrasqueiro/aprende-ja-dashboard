@@ -1,12 +1,14 @@
 import { useContext } from "react";
 import { ApiContext } from "../../../contexts/ApiContext";
 import { GlobalContext } from "../../../contexts/GlobalContext";
-import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer } from "./NewModuleOrLesson.style";
-import ModulesToolBar from "../../../components/ModulesToolBar/ModulesTollBar";
+import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, Lesson } from "./NewModuleOrLesson.style";
 import AddBoxIcon from '@mui/icons-material/AddBox';
+import MenuIcon from '@mui/icons-material/Menu';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 function NewModuleOrLesson() {
-  const { course, modules } = useContext(ApiContext)
+  const { course, modules, showLessons, setShowLessons } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
 
   return (
@@ -36,11 +38,28 @@ function NewModuleOrLesson() {
                 :
                 (
                   modules.map((module) => (
-                    <ModulesToolBar
-                      key={module.moduleID}
-                      moduleName={module.moduleName}
-                      numberOfLessons={`${module.lessons.length} aulas`}
-                    />
+                    <ModuleToolBar key={module.moduleID}>
+                      <ToolBar>
+                        <MenuIcon />
+                        <CheckModule
+                          type="checkbox"
+                        />
+                        <ModuleName>{module.moduleName}</ModuleName>
+                        <LessonsCounter>{`${module.lessons.length} aulas`}</LessonsCounter>
+                      </ToolBar>
+                      <ShowLessonsButton onClick={() => setShowLessons(!showLessons)}>
+                        {showLessons ?
+                          <KeyboardArrowUpIcon />
+                          :
+                          <KeyboardArrowDownIcon />
+                        }
+                      </ShowLessonsButton>
+                      {module.lessons.map((lesson) => (
+                        <Lesson showlessons={showLessons ? "true" : "false"} key={lesson.lessonID}>
+                          {lesson.lessonTitle}
+                        </Lesson>
+                      ))}
+                    </ModuleToolBar>
                   ))
                 )
               }
