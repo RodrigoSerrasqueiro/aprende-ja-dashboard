@@ -10,8 +10,7 @@ export const ApiStorage = ({ children }) => {
   const [imageURL, setImageURL] = useState("")
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
-  const [course, setCourse] = useState({})
-  const [modules, setModules] = useState([])
+
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
   const uploadVideo = async (video) => {
@@ -65,16 +64,7 @@ export const ApiStorage = ({ children }) => {
   }
 
   const newModuleOrLesson = async (courseID) => {
-    const url = `http://localhost:4000/courses/get-course/${courseID}`
-
-    try {
-      const response = await axios.get(url)
-      setCourse(response.data)
-      const modules = response.data.modules
-      setModules(modules)
-    } catch (error) {
-      console.log(error)
-    }
+    sessionStorage.setItem("courseID", courseID);
   }
 
   const createCourse = async (
@@ -124,9 +114,7 @@ export const ApiStorage = ({ children }) => {
       lessonID,
       getCourses,
       newModuleOrLesson,
-      course,
       courses,
-      modules,
       closeModalNewCourse,
       addNewCourse,
       openModalNewCourse,

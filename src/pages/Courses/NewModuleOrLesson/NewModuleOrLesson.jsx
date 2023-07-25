@@ -1,6 +1,6 @@
-import { useContext, useState } from "react";
-import { ApiContext } from "../../../contexts/ApiContext";
+import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../contexts/GlobalContext";
+import axios from 'axios'
 import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer } from "./NewModuleOrLesson.style";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuIcon from '@mui/icons-material/Menu';
@@ -11,8 +11,34 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 
 function NewModuleOrLesson() {
-  const { course, modules } = useContext(ApiContext)
+
   const { openMenu } = useContext(GlobalContext)
+
+  const [course, setCourse] = useState({})
+  const [modules, setModules] = useState([])
+
+  async function load() {
+    const courseID = sessionStorage.getItem("courseID");
+    if (courseID) {
+      const url = `http://localhost:4000/courses/get-course/${courseID}`;
+      try {
+        const response = await axios.get(url);
+        const courseData = response.data;
+        setCourse(courseData);
+        const modulesData = courseData.modules;
+        setModules(modulesData);
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert("não achou ID do curso")
+      // Caso não haja courseID no sessionStorage, redireciona para alguma página de erro ou tratamento adequado
+    }
+  }
+
+  useEffect(() => {
+    load()
+  }, [])
 
   const [moduleLessonsVisibility, setModuleLessonsVisibility] = useState({});
 
