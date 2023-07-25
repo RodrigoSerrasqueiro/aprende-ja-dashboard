@@ -51,7 +51,7 @@ export const ModulesOptions = styled.div`
   column-gap: 20px;
 
   > span {
-    font-size: 1.3rem;
+    font-size: 1.5rem;
     font-weight: bold;
   }
 
@@ -74,8 +74,8 @@ export const ModulesOptions = styled.div`
 
 export const ModulesList = styled.div`
   display: flex;
+  flex-direction: column;
   width: 100%;
-  margin-top: 20px;
 `;
 
 export const ModuleToolBar = styled.div`
@@ -84,6 +84,7 @@ export const ModuleToolBar = styled.div`
   border-radius: 8px;
   display: flex;
   flex-direction: column;
+  margin-top: 20px;
 `;
 
 export const ToolBar = styled.div`
@@ -105,10 +106,13 @@ export const CheckModule = styled.input`
   margin-right: 20px;
 `;
 
+export const ModuleNameContainer = styled.div`
+  width: 75%;
+`;
+
 export const ModuleName = styled.span`
   font-size: 1.5rem;
   font-weight: bold;
-  margin-right: 300px;
 `;
 
 export const LessonsCounter = styled.div`
@@ -121,6 +125,20 @@ export const LessonsCounter = styled.div`
   font-weight: 500;
   background-color: ${({theme}) => theme.buttonColor};
   border-radius: 4px;
+  margin-right: 40px;
+`;
+
+export const ButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 150px;
+  height: 30px;
+  color: ${({theme}) => theme.iconColor};
+
+  > svg {
+    cursor: pointer;
+  }
 `;
 
 export const ShowLessonsButton = styled.div`
@@ -140,11 +158,46 @@ export const ShowLessonsButton = styled.div`
   }
 `;
 
-export const Lesson = styled.div`
+export const LessonsContainer = styled.div`
   width: 100%;
-  height: 30px;
   display: ${({showlessons}) => showlessons === "true" ? "flex" : "none"};
-  color: #000;
-  font-size: 16px;
-  background-color: red;
+  flex-direction: column;
+`;
+
+export const LessonToolBar = styled.div`
+  width: 100%;
+  height: 70px;
+  padding: 0 20px;
+  display: flex;
+  align-items: center;
+  border: 0.5px solid ${({theme}) => theme.shadowColor};
+
+  > svg {
+    color: ${({theme}) => theme.iconColor};
+    cursor: pointer;
+    margin-right: 30px;
+  }
+`;
+
+export const LessonNameContainer = styled.div`
+  width: 80%;
+`;
+
+export const LessonName = styled.span`
+  font-size: 1.3rem;
+  margin-right: 150px;
+  color: ${({theme}) => theme.iconColor};
+`;
+
+export const LessonButtonsContainer = styled.div`
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  width: 100px;
+  height: 30px;
+  color: ${({theme}) => theme.secondaryButtonColor};
+
+  > svg {
+    cursor: pointer;
+  }
 `;

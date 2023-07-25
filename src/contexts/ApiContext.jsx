@@ -13,9 +13,6 @@ export const ApiStorage = ({ children }) => {
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
-  const [showLessons, setShowLessons] = useState(false)
-
-
 
   const uploadVideo = async (video) => {
     try {
@@ -133,8 +130,6 @@ export const ApiStorage = ({ children }) => {
       closeModalNewCourse,
       addNewCourse,
       openModalNewCourse,
-      showLessons,
-      setShowLessons,
     }}>
       {children}
     </ApiContext.Provider>

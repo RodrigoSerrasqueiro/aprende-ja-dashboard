@@ -1,15 +1,19 @@
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { ApiContext } from "../../../contexts/ApiContext";
 import { GlobalContext } from "../../../contexts/GlobalContext";
-import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, Lesson } from "./NewModuleOrLesson.style";
+import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer } from "./NewModuleOrLesson.style";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import AddCircleIcon from '@mui/icons-material/AddCircle';
+import EditIcon from '@mui/icons-material/Edit';
+import DeleteIcon from '@mui/icons-material/Delete';
 
 function NewModuleOrLesson() {
-  const { course, modules, showLessons, setShowLessons } = useContext(ApiContext)
+  const { course, modules } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
+  const [showLessons, setShowLessons] = useState(false)
 
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
@@ -44,8 +48,15 @@ function NewModuleOrLesson() {
                         <CheckModule
                           type="checkbox"
                         />
-                        <ModuleName>{module.moduleName}</ModuleName>
+                        <ModuleNameContainer>
+                          <ModuleName>{module.moduleName}</ModuleName>
+                        </ModuleNameContainer>
                         <LessonsCounter>{`${module.lessons.length} aulas`}</LessonsCounter>
+                        <ButtonsContainer>
+                          <AddCircleIcon />
+                          <EditIcon />
+                          <DeleteIcon />
+                        </ButtonsContainer>
                       </ToolBar>
                       <ShowLessonsButton onClick={() => setShowLessons(!showLessons)}>
                         {showLessons ?
@@ -55,9 +66,21 @@ function NewModuleOrLesson() {
                         }
                       </ShowLessonsButton>
                       {module.lessons.map((lesson) => (
-                        <Lesson showlessons={showLessons ? "true" : "false"} key={lesson.lessonID}>
-                          {lesson.lessonTitle}
-                        </Lesson>
+                        <LessonsContainer showlessons={showLessons ? "true" : "false"} key={lesson.lessonID}>
+                          <LessonToolBar>
+                            <MenuIcon />
+                            <CheckModule
+                              type="checkbox"
+                            />
+                            <LessonNameContainer>
+                              <LessonName>{lesson.lessonTitle}</LessonName>
+                            </LessonNameContainer>
+                            <LessonButtonsContainer>
+                              <EditIcon />
+                              <DeleteIcon />
+                            </LessonButtonsContainer>
+                          </LessonToolBar>
+                        </LessonsContainer>
                       ))}
                     </ModuleToolBar>
                   ))

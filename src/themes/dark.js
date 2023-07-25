@@ -12,6 +12,7 @@ const darkTheme = {
   navTextColorHover: '#000000',
   scrollBarColor: 'rgba(255,255,255,0.5)',
   buttonColor: '#038c96',
+  secondaryButtonColor: '#677998',
 };
 
 export default darkTheme;

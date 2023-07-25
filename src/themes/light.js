@@ -12,6 +12,7 @@ const lightTheme = {
   navTextColorHover: '#394353',
   scrollBarColor: 'rgba(0,0,0,0.15)',
   buttonColor: '#03bcc9',
+  secondaryButtonColor: '#677998',
 };
 
 export default lightTheme;
