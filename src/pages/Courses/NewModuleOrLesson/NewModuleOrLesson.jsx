@@ -22,7 +22,7 @@ function NewModuleOrLesson() {
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
   const [moduleName, setModuleName] = useState("")
-  const [dataUpdated, setDataUpdated] = useState(false);
+  const [updateCounter, setUpdateCounter] = useState(0);
   const [currentModule, setCurrentModule] = useState("")
   const [lessonTitle, setLessonTitle] = useState("")
   const [lessonDescription, setLessonDescription] = useState("")
@@ -52,8 +52,7 @@ function NewModuleOrLesson() {
 
   useEffect(() => {
     load()
-    setDataUpdated(false)
-  }, [dataUpdated])
+  }, [updateCounter])
 
   const [moduleLessonsVisibility, setModuleLessonsVisibility] = useState({});
 
@@ -71,7 +70,7 @@ function NewModuleOrLesson() {
     }
     addModuleToCourse(course.courseID, moduleName)
     setModuleModalIsOpen(false)
-    setDataUpdated(true)
+    setUpdateCounter((prevCounter) => prevCounter + 1);
   }
 
   const openLessonModal = (moduleID) => {
@@ -97,6 +96,8 @@ function NewModuleOrLesson() {
       return;
     }
     addLessonToModule(course.courseID, currentModule, lessonID, lessonTitle, lessonDescription, videoURL)
+    setLessonModalIsOpen(false)
+    setUpdateCounter((prevCounter) => prevCounter + 1);
   }
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
@@ -128,8 +129,7 @@ function NewModuleOrLesson() {
             src={videoURL}
             title="Video Player"
             width="400"
-            height="200"
-            allowfullscreen
+            height="300"
           ></iframe>
         }
         <button onClick={newLesson}>ADICIONAR AULA</button>

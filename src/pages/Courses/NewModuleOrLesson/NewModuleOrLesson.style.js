@@ -310,4 +310,18 @@ export const NewLessonModal = styled.div`
     justify-content: center;
     align-items: center;
   }
+
+  > svg {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+
+  100% {
+    transform: rotate(-360deg);
+  }
+}
 `;

@@ -21,8 +21,8 @@ export const ApiStorage = ({ children }) => {
       if (response.status === 200) {
         alert("Upload realizado com sucesso!")
         console.log(response)
-        setVideoURL(response.data.url)
-        setLessonID(response.data.id)
+        setVideoURL(response.data.videoData.video_player)
+        setLessonID(response.data.videoData.id)
       }
     } catch (error) {
       console.log(error);
@@ -122,10 +122,10 @@ export const ApiStorage = ({ children }) => {
     }
   }
 
-  const addLessonToModule = async (courseID, moduleID, LessonID, LessonTitle, LessonDescription, LessonVideoURL) => {
-    const url = `http://localhost:4000/courses/new-module/${courseID}/${moduleID}`
+  const addLessonToModule = async (courseID, moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
+    const url = `http://localhost:4000/courses/new-lesson/${courseID}/${moduleID}`
     try {
-      const response = await api.post(url, { LessonID, LessonTitle, LessonDescription, LessonVideoURL },
+      const response = await api.post(url, { lessonID, lessonTitle, lessonDescription, lessonVideoURL },
         {
           headers: {
             'Content-Type': 'application/json'
