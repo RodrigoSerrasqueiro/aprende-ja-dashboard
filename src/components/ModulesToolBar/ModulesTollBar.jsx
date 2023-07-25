@@ -27,6 +27,7 @@ function ModulesToolBar(props) {
           <KeyboardArrowDownIcon />
         }
       </ShowLessonsButton>
+
     </ModuleToolBar>
   )
 }

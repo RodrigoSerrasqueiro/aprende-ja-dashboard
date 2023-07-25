@@ -2,7 +2,6 @@ import { styled } from "styled-components";
 
 export const ModuleToolBar = styled.div`
   width: 100%;
-  height: 100px;
   box-shadow: 0 5px 7px 0 ${({theme}) => theme.shadowColor};
   border-radius: 8px;
   display: flex;
@@ -11,7 +10,7 @@ export const ModuleToolBar = styled.div`
 
 export const ToolBar = styled.div`
   width: 100%;
-  height: 70%;
+  height: 70px;
   display: flex;
   align-items: center;
   padding: 0 20px;
@@ -48,7 +47,7 @@ export const LessonsCounter = styled.div`
 
 export const ShowLessonsButton = styled.div`
   width: 100%;
-  height: 30%;
+  height: 30px;
   display: flex;
   align-items: center;
   justify-content: center;
@@ -61,4 +60,13 @@ export const ShowLessonsButton = styled.div`
   &:hover {
     background-color: rgba(230, 255, 255, 0.3);
   }
+`;
+
+export const Lesson = styled.div`
+  width: 100%;
+  height: 30px;
+  display: ${({showlessons}) => showlessons === "true" ? "flex" : "none"};
+  color: #000;
+  font-size: 16px;
+  background-color: red;
 `;

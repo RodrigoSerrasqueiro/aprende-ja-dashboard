@@ -9,8 +9,6 @@ function NewModuleOrLesson() {
   const { course, modules } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
 
-
-
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
       <CourseContent>
