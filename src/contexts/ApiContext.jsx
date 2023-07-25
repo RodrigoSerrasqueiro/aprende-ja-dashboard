@@ -104,6 +104,24 @@ export const ApiStorage = ({ children }) => {
     }
   };
 
+  const addModuleToCourse = async (courseID, moduleName) => {
+    const url = `http://localhost:4000/courses/new-module/${courseID}`
+    try {
+      const response = await api.post(url, { moduleName },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      if (response.status === 200) {
+        alert("Módulo adicionado ao curso!");
+      }
+    } catch (erro) {
+      console.log(erro)
+      alert("erro ao adicionar módulo")
+    }
+  }
+
   return (
     <ApiContext.Provider value={{
       uploadVideo,
@@ -117,6 +135,7 @@ export const ApiStorage = ({ children }) => {
       courses,
       closeModalNewCourse,
       addNewCourse,
+      addModuleToCourse,
       openModalNewCourse,
     }}>
       {children}

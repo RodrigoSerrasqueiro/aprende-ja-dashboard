@@ -1,7 +1,8 @@
 import { useContext, useEffect, useState } from "react";
 import { GlobalContext } from "../../../contexts/GlobalContext";
+import { ApiContext } from "../../../contexts/ApiContext";
 import axios from 'axios'
-import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer } from "./NewModuleOrLesson.style";
+import { CourseContent, CourseImage, CourseImageContainer, CourseModulesContainer, CourseName, ModulesContent, ModulesList, ModulesOptions, NewModuleOrLessonContainer, CheckModule, LessonsCounter, ModuleName, ModuleToolBar, ShowLessonsButton, ToolBar, LessonsContainer, ButtonsContainer, LessonToolBar, LessonName, ModuleNameContainer, LessonNameContainer, LessonButtonsContainer, NewModuleModal } from "./NewModuleOrLesson.style";
 import AddBoxIcon from '@mui/icons-material/AddBox';
 import MenuIcon from '@mui/icons-material/Menu';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
@@ -9,13 +10,18 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import AddCircleIcon from '@mui/icons-material/AddCircle';
 import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
+import CloseIcon from '@mui/icons-material/Close';
 
 function NewModuleOrLesson() {
 
   const { openMenu } = useContext(GlobalContext)
-
+  const { addModuleToCourse } = useContext(ApiContext)
+  const [moduleModalIsOpen, setModuleModalIsOpen] = useState(false)
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
+  const [moduleName, setModuleName] = useState("")
+  const [dataUpdated, setDataUpdated] = useState(false);
+
 
   async function load() {
     const courseID = sessionStorage.getItem("courseID");
@@ -38,7 +44,8 @@ function NewModuleOrLesson() {
 
   useEffect(() => {
     load()
-  }, [])
+    setDataUpdated(false)
+  }, [dataUpdated])
 
   const [moduleLessonsVisibility, setModuleLessonsVisibility] = useState({});
 
@@ -49,8 +56,26 @@ function NewModuleOrLesson() {
     }));
   };
 
+  const newModule = () => {
+    if (!moduleName) {
+      alert("De um nome ao novo módulo!")
+      return;
+    }
+    addModuleToCourse(course.courseID, moduleName)
+    setModuleModalIsOpen(false)
+    setDataUpdated(true)
+  }
+
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
+      <NewModuleModal isopen={moduleModalIsOpen ? "true" : "false"}>
+        <div>
+          <span>Nome do módulo:</span>
+          <CloseIcon onClick={() => setModuleModalIsOpen(false)} />
+        </div>
+        <input type="text" onChange={(e) => setModuleName(e.target.value)}></input>
+        <button onClick={newModule}>Adicionar módulo</button>
+      </NewModuleModal>
       <CourseContent>
 
         <CourseImageContainer>
@@ -62,7 +87,7 @@ function NewModuleOrLesson() {
           <ModulesContent>
             <ModulesOptions>
               <span>Módulos</span>
-              <button>
+              <button onClick={() => setModuleModalIsOpen(true)}>
                 <AddBoxIcon />
                 Adicionar
               </button>
