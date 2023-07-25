@@ -13,7 +13,15 @@ import DeleteIcon from '@mui/icons-material/Delete';
 function NewModuleOrLesson() {
   const { course, modules } = useContext(ApiContext)
   const { openMenu } = useContext(GlobalContext)
-  const [showLessons, setShowLessons] = useState(false)
+
+  const [moduleLessonsVisibility, setModuleLessonsVisibility] = useState({});
+
+  const handleToggleLessons = (moduleId) => {
+    setModuleLessonsVisibility((prevState) => ({
+      ...prevState,
+      [moduleId]: !prevState[moduleId],
+    }));
+  };
 
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
@@ -58,15 +66,18 @@ function NewModuleOrLesson() {
                           <DeleteIcon />
                         </ButtonsContainer>
                       </ToolBar>
-                      <ShowLessonsButton onClick={() => setShowLessons(!showLessons)}>
-                        {showLessons ?
+                      <ShowLessonsButton onClick={() => handleToggleLessons(module.moduleID)}>
+                        {moduleLessonsVisibility[module.moduleID] ?
                           <KeyboardArrowUpIcon />
                           :
                           <KeyboardArrowDownIcon />
                         }
                       </ShowLessonsButton>
                       {module.lessons.map((lesson) => (
-                        <LessonsContainer showlessons={showLessons ? "true" : "false"} key={lesson.lessonID}>
+                        <LessonsContainer
+                          showlessons={moduleLessonsVisibility[module.moduleID] ? "true" : "false"}
+                          key={lesson.lessonID}
+                        >
                           <LessonToolBar>
                             <MenuIcon />
                             <CheckModule
