@@ -2,6 +2,7 @@ import { useContext, useState } from "react"
 import { ApiContext } from "../../contexts/ApiContext"
 import { FormContainer } from "./FormNewCourse.style";
 import InputDropZone from "../InputDropZone/InputDropZone";
+import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
 
 function FormNewCourse() {
 
@@ -15,11 +16,13 @@ function FormNewCourse() {
   const [courseWorkload, setCourseWorkload] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [courseLevel, setCourseLevel] = useState("");
+  const [uploadIsActive, setUploadIsActive] = useState(false)
 
   const sendImage = () => {
     if (!courseImage) {
       return;
     }
+    setUploadIsActive(true)
     uploadImage(courseImage)
   }
 
@@ -54,12 +57,8 @@ function FormNewCourse() {
       <span>IMAGEM DO CURSO</span>
       <InputDropZone setSelectedFile={setCourseImage} acceptedFileType="image/*" />
       <button onClick={sendImage}>enviar</button>
-      {imageURL === "" ?
-        <span>aguarde o upload</span>
-        :
-        <img style={{ width: "100px", height: "auto" }} alt="imagem do curso" src={imageURL} />
-      }
-
+      {!imageURL && <RotateLeftRoundedIcon style={{ display: uploadIsActive ? 'block' : 'none' }} />}
+      {imageURL && <span>Upload realizado com sucesso!</span>}
 
       <span>DESCRIÇÃO DO CURSO</span>
       <input type="text" onChange={(e) => setCourseDescription(e.target.value)} />

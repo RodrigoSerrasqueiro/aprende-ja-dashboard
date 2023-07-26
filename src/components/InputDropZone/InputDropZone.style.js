@@ -17,6 +17,6 @@ export const ImagePreview = styled.img`
 `;
 
 export const VideoPreview = styled.video`
-  max-width: 60%;
+  max-width: 50%;
   z-index: 4;
 `;

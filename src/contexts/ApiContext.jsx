@@ -19,7 +19,6 @@ export const ApiStorage = ({ children }) => {
       formData.append('video', video);
       const response = await api.post('/videos/upload', formData);
       if (response.status === 200) {
-        alert("Upload realizado com sucesso!")
         setVideoURL(response.data.videoData.video_player)
         setLessonID(response.data.videoData.id)
       }
@@ -35,7 +34,6 @@ export const ApiStorage = ({ children }) => {
       formData.append('courseImage', image);
       const response = await api.post('/courses/upload-image', formData);
       if (response.status === 201) {
-        alert("Upload realizado com sucesso!")
         setImageURL(response.data.imageUrl)
       }
     } catch (error) {

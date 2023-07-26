@@ -19,6 +19,20 @@ export const FormContainer = styled.div`
     margin-top: 20px;
   }
 
+  > svg {
+    animation: spin 2s linear infinite;
+  }
+
+  @keyframes spin {
+    0% {
+      transform: rotate(0deg);
+    }
+
+    100% {
+      transform: rotate(-360deg);
+    }
+  }
+
   &:hover {
     > button {
       cursor: pointer;

@@ -141,14 +141,7 @@ function NewModuleOrLesson() {
         <InputDropZone setSelectedFile={setLessonVideo} acceptedFileType="video/*" />
         <button onClick={sendVideoFile}>ENVIAR</button>
         {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
-        {videoURL &&
-          <iframe
-            src={videoURL}
-            title="Video Player"
-            width="400"
-            height="300"
-          ></iframe>
-        }
+        {videoURL && <span>Upload realizado com sucesso!</span>}
         <button onClick={newLesson}>ADICIONAR AULA</button>
       </NewLessonModal>
       <CourseContent>

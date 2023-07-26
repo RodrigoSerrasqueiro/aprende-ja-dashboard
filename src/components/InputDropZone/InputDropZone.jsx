@@ -32,13 +32,16 @@ function InputDropZone({ setSelectedFile, acceptedFileType }) {
       ) : (
         <p>Arraste e solte uma imagem aqui ou clique para selecionar.</p>
       )}
-      {acceptedFileType === "image/*" ? (
-        imagePreview && <ImagePreview src={imagePreview} alt="Preview" />
-      ) : (
-        <VideoPreview>
-          <source src={imagePreview} />
-          Seu navegador não suporta a reprodução de vídeo.
-        </VideoPreview>
+      {imagePreview && (
+        <>
+          {acceptedFileType === "image/*" ? (
+            <ImagePreview src={imagePreview} alt="preview da imagem" />
+          ) : (
+            <VideoPreview>
+              <source src={imagePreview} />
+            </VideoPreview>
+          )}
+        </>
       )}
     </DropzoneContainer>
   )
