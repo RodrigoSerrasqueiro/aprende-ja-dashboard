@@ -12,6 +12,7 @@ import EditIcon from '@mui/icons-material/Edit';
 import DeleteIcon from '@mui/icons-material/Delete';
 import CloseIcon from '@mui/icons-material/Close';
 import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
+import InputDropZone from "../../../components/InputDropZone/InputDropZone";
 
 function NewModuleOrLesson() {
 
@@ -87,10 +88,6 @@ function NewModuleOrLesson() {
     setCurrentModule(moduleID)
   }
 
-  const handleVideoFile = (e) => {
-    setLessonVideo(e.target.files[0])
-  }
-
   const sendVideoFile = () => {
     if (!lessonVideo) {
       return;
@@ -141,7 +138,7 @@ function NewModuleOrLesson() {
         <input type="text" maxLength={300} onChange={(e) => setLessonDescription(e.target.value)} />
 
         <span>Selecione o vídeo da aula:</span>
-        <input type="file" onChange={handleVideoFile} />
+        <InputDropZone setSelectedFile={setLessonVideo} acceptedFileType="video/*" />
         <button onClick={sendVideoFile}>ENVIAR</button>
         {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
         {videoURL &&
