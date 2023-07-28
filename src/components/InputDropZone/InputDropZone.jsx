@@ -3,7 +3,7 @@ import { DropzoneContainer, ImagePreview, VideoPreview } from "./InputDropZone.s
 import { useState } from "react";
 
 // eslint-disable-next-line react/prop-types
-function InputDropZone({ setSelectedFile, acceptedFileType }) {
+function InputDropZone({ sendFile, acceptedFileType }) {
 
   const [imagePreview, setImagePreview] = useState(null);
 
@@ -12,14 +12,12 @@ function InputDropZone({ setSelectedFile, acceptedFileType }) {
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
       const file = acceptedFiles[0];
-      setSelectedFile(file);
+      sendFile(file);
 
       // Gerar URL temporária para a pré-visualização da imagem ou vídeo
       const objectUrl = URL.createObjectURL(file);
       setImagePreview(objectUrl);
 
-      // Log da URL temporária gerada (para verificar se está correta)
-      console.log("URL temporária gerada:", objectUrl);
     },
   });
 
@@ -30,7 +28,7 @@ function InputDropZone({ setSelectedFile, acceptedFileType }) {
       {isDragActive ? (
         <p>Solte o arquivo aqui...</p>
       ) : (
-        <p>Arraste e solte uma imagem aqui ou clique para selecionar.</p>
+        <p>Arraste e solte o arquivo aqui ou clique para selecionar.</p>
       )}
       {imagePreview && (
         <>

@@ -27,7 +27,6 @@ function NewModuleOrLesson() {
   const [currentModule, setCurrentModule] = useState("")
   const [lessonTitle, setLessonTitle] = useState("")
   const [lessonDescription, setLessonDescription] = useState("")
-  const [lessonVideo, setLessonVideo] = useState("")
   const [isLoading, setIsLoading] = useState(false)
 
 
@@ -88,11 +87,11 @@ function NewModuleOrLesson() {
     setCurrentModule(moduleID)
   }
 
-  const sendVideoFile = () => {
-    if (!lessonVideo) {
+  const sendVideoFile = (video) => {
+    if (!video) {
       return;
     }
-    uploadVideo(lessonVideo)
+    uploadVideo(video)
     setIsLoading(true)
   }
 
@@ -138,8 +137,7 @@ function NewModuleOrLesson() {
         <input type="text" maxLength={300} onChange={(e) => setLessonDescription(e.target.value)} />
 
         <span>Selecione o vídeo da aula:</span>
-        <InputDropZone setSelectedFile={setLessonVideo} acceptedFileType="video/*" />
-        <button onClick={sendVideoFile}>ENVIAR</button>
+        <InputDropZone sendFile={sendVideoFile} acceptedFileType="video/*" />
         {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
         {videoURL && <span>Upload realizado com sucesso!</span>}
         <button onClick={newLesson}>ADICIONAR AULA</button>

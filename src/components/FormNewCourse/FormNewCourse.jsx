@@ -11,19 +11,18 @@ function FormNewCourse() {
   const [courseType, setCourseType] = useState("");
   const [courseSubType, setCourseSubType] = useState("");
   const [courseName, setCourseName] = useState("");
-  const [courseImage, setCourseImage] = useState("");
   const [courseDescription, setCourseDescription] = useState("");
   const [courseWorkload, setCourseWorkload] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [courseLevel, setCourseLevel] = useState("");
   const [uploadIsActive, setUploadIsActive] = useState(false)
 
-  const sendImage = () => {
-    if (!courseImage) {
+  const sendImage = (image) => {
+    if (!image) {
       return;
     }
     setUploadIsActive(true)
-    uploadImage(courseImage)
+    uploadImage(image)
   }
 
 
@@ -55,8 +54,7 @@ function FormNewCourse() {
       <input type="text" onChange={(e) => setCourseName(e.target.value)} />
 
       <span>IMAGEM DO CURSO</span>
-      <InputDropZone setSelectedFile={setCourseImage} acceptedFileType="image/*" />
-      <button onClick={sendImage}>enviar</button>
+      <InputDropZone sendFile={sendImage} acceptedFileType="image/*" />
       {!imageURL && <RotateLeftRoundedIcon style={{ display: uploadIsActive ? 'block' : 'none' }} />}
       {imageURL && <span>Upload realizado com sucesso!</span>}
 
