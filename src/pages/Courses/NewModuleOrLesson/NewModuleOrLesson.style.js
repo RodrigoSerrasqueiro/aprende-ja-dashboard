@@ -270,7 +270,7 @@ export const NewLessonModal = styled.div`
   border-radius: 8px;
   position: fixed;
   z-index: 2;
-  top: 40vh;
+  top: 45vh;
   left: 50vw;
   transform: translate(-50%, -50%);
   border: 2px solid ${({theme}) => theme.secondaryTextColor};
