@@ -17,19 +17,23 @@ import InputDropZone from "../../../components/InputDropZone/InputDropZone";
 function NewModuleOrLesson() {
 
   const { openMenu } = useContext(GlobalContext)
-  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo, editModuleName } = useContext(ApiContext)
+  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo, editModuleName, editLessonData, uploadSucessful, hideUploadMessage } = useContext(ApiContext)
   const [moduleModalIsOpen, setModuleModalIsOpen] = useState(false)
   const [editModuleModal, setEditModuleModal] = useState(false)
   const [lessonModalIsOpen, setLessonModalIsOpen] = useState(false)
+  const [editLessonModal, setEditLessonModal] = useState(false)
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
   const [moduleName, setModuleName] = useState("")
   const [moduleNameEdited, setModuleNameEdited] = useState("")
   const [updateCounter, setUpdateCounter] = useState(0);
   const [currentModule, setCurrentModule] = useState("")
+  const [currentLesson, setCurrentLesson] = useState("")
   const [lessonTitle, setLessonTitle] = useState("")
   const [lessonDescription, setLessonDescription] = useState("")
+  const [lessonData, setLessonData] = useState({})
   const [isLoading, setIsLoading] = useState(false)
+  const [editVideo, setEditVideo] = useState(true)
 
 
 
@@ -72,21 +76,27 @@ function NewModuleOrLesson() {
     }
 
     try {
-      // Adiciona o módulo
       await addModuleToCourse(course.courseID, moduleName);
 
-      // Atualiza o contador somente após a conclusão da operação assíncrona
-      setModuleModalIsOpen(false);
       setUpdateCounter((prevCounter) => prevCounter + 1);
+      setModuleModalIsOpen(false)
     } catch (error) {
       console.error("Erro ao adicionar o módulo:", error);
-      // Trate o erro adequadamente aqui (exibir uma mensagem de erro, etc.)
     }
   };
 
   const openLessonModal = (moduleID) => {
+    setIsLoading(false)
     setLessonModalIsOpen(true)
     setCurrentModule(moduleID)
+    hideUploadMessage()
+  }
+
+  const closeModals = () => {
+    setEditLessonModal(false)
+    setModuleModalIsOpen(false)
+    setEditModuleModal(false)
+    setModuleModalIsOpen(false)
   }
 
   const sendVideoFile = (video) => {
@@ -104,15 +114,13 @@ function NewModuleOrLesson() {
     }
 
     try {
-      // Adiciona a aula
       await addLessonToModule(course.courseID, currentModule, lessonID, lessonTitle, lessonDescription, videoURL);
 
-      // Atualiza o contador somente após a conclusão da operação assíncrona
-      setLessonModalIsOpen(false);
       setUpdateCounter((prevCounter) => prevCounter + 1);
+      setLessonModalIsOpen(false)
+
     } catch (error) {
       console.error("Erro ao adicionar a aula:", error);
-      // Trate o erro adequadamente aqui (exibir uma mensagem de erro, etc.)
     }
   };
 
@@ -120,6 +128,15 @@ function NewModuleOrLesson() {
     setModuleNameEdited(moduleName)
     setCurrentModule(moduleID)
     setEditModuleModal(true)
+  }
+
+  const openEditLessonModal = (moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
+    hideUploadMessage()
+    setIsLoading(false)
+    setCurrentModule(moduleID)
+    setCurrentLesson(lessonID)
+    setLessonData({ lessonTitle: lessonTitle, lessonDescription: lessonDescription, lessonVideoURL: lessonVideoURL })
+    setEditLessonModal(true)
   }
 
   const editModule = async () => {
@@ -131,10 +148,30 @@ function NewModuleOrLesson() {
     try {
       await editModuleName(course.courseID, currentModule, moduleNameEdited);
 
-      setEditModuleModal(false);
+      closeModals()
       setUpdateCounter((prevCounter) => prevCounter + 1);
     } catch (error) {
       console.error("Erro ao alterar dados do módulo:", error);
+    }
+  };
+
+  const editLesson = async () => {
+    if (!course || !currentModule || !lessonData.lessonTitle || !lessonData.lessonDescription || !lessonData.lessonVideoURL) {
+      alert("Faltam dados");
+      return;
+    }
+
+    try {
+      if (!videoURL) {
+        await editLessonData(course.courseID, currentModule, currentLesson, lessonData.lessonTitle, lessonData.lessonDescription, lessonData.lessonVideoURL);
+      } else {
+        await editLessonData(course.courseID, currentModule, currentLesson, lessonData.lessonTitle, lessonData.lessonDescription, videoURL);
+      }
+
+      closeModals()
+      setUpdateCounter((prevCounter) => prevCounter + 1);
+    } catch (error) {
+      console.error("Erro ao alterar dados da aula:", error);
     }
   };
 
@@ -142,26 +179,31 @@ function NewModuleOrLesson() {
 
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
+      {/*modal para adição de um novo módulo */}
       <NewModuleModal isopen={moduleModalIsOpen ? "true" : "false"}>
         <div>
           <span>Nome do módulo:</span>
-          <CloseIcon onClick={() => setModuleModalIsOpen(false)} />
+          <CloseIcon onClick={closeModals} />
         </div>
         <input type="text" onChange={(e) => setModuleName(e.target.value)} />
         <button onClick={newModule}>Adicionar módulo</button>
       </NewModuleModal>
+
+      {/*modal para edição de dados do módulo */}
       <NewModuleModal isopen={editModuleModal ? "true" : "false"}>
         <div>
           <span>Nome do módulo:</span>
-          <CloseIcon onClick={() => setEditModuleModal(false)} />
+          <CloseIcon onClick={closeModals} />
         </div>
         <input type="text" defaultValue={moduleNameEdited} onChange={(e) => setModuleNameEdited(e.target.value)} />
         <button onClick={editModule}>Salvar alterações</button>
       </NewModuleModal>
+
+      {/*modal para adição de uma nova aula */}
       <NewLessonModal isopen={lessonModalIsOpen ? "true" : "false"}>
         <div>
           <span>Preencha os dados da nova aula:</span>
-          <CloseIcon onClick={() => setLessonModalIsOpen(false)} />
+          <CloseIcon onClick={closeModals} />
         </div>
         <span>Título da aula:</span>
         <input type="text" onChange={(e) => setLessonTitle(e.target.value)} />
@@ -172,9 +214,30 @@ function NewModuleOrLesson() {
         <span>Selecione o vídeo da aula:</span>
         <InputDropZone sendFile={sendVideoFile} acceptedFileType="video/*" />
         {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
-        {videoURL && <span>Upload realizado com sucesso!</span>}
+        {uploadSucessful && <span>Upload realizado com sucesso!</span>}
         <button onClick={newLesson}>ADICIONAR AULA</button>
       </NewLessonModal>
+
+      {/*modal para edição dos dados de uma aula */}
+      <NewLessonModal isopen={editLessonModal ? "true" : "false"}>
+        <div>
+          <span>Edite os dados da aula:</span>
+          <CloseIcon onClick={closeModals} />
+        </div>
+        <span>Título da aula:</span>
+        <input type="text" defaultValue={lessonData.lessonTitle} onChange={(e) => setLessonData((data) => ({ ...data, lessonTitle: e.target.value }))} />
+
+        <span>Descrição da aula:</span>
+        <input type="text" defaultValue={lessonData.lessonDescription} maxLength={300} onChange={(e) => setLessonData((data) => ({ ...data, lessonDescription: e.target.value }))} />
+
+        <button onClick={() => setEditVideo(!editVideo)}>{editVideo ? "Alterar video da aula" : "Cancelar"}</button>
+        {!editVideo && <InputDropZone sendFile={sendVideoFile} acceptedFileType="video/*" />}
+
+        {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
+        {uploadSucessful && <span>Upload realizado com sucesso!</span>}
+        <button onClick={editLesson}>Salvar alterações</button>
+      </NewLessonModal>
+
       <CourseContent>
 
         <CourseImageContainer>
@@ -237,7 +300,9 @@ function NewModuleOrLesson() {
                               <LessonName>{lesson.lessonTitle}</LessonName>
                             </LessonNameContainer>
                             <LessonButtonsContainer>
-                              <EditIcon />
+                              <EditIcon
+                                onClick={() => openEditLessonModal(module.moduleID, lesson.lessonID, lesson.lessonTitle, lesson.lessonDescription, lesson.lessonVideoURL)}
+                              />
                               <DeleteIcon />
                             </LessonButtonsContainer>
                           </LessonToolBar>

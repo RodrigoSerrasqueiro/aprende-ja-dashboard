@@ -10,10 +10,12 @@ export const ApiStorage = ({ children }) => {
   const [imageURL, setImageURL] = useState("")
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
+  const [uploadSucessful, setUploadSucessfull] = useState(false)
 
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
   const uploadVideo = async (video) => {
+    setVideoURL("")
     try {
       const formData = new FormData();
       formData.append('video', video);
@@ -21,6 +23,7 @@ export const ApiStorage = ({ children }) => {
       if (response.status === 200) {
         setVideoURL(response.data.videoData.video_player)
         setLessonID(response.data.videoData.id)
+        setUploadSucessfull(true)
       }
     } catch (error) {
       console.log(error);
@@ -29,12 +32,14 @@ export const ApiStorage = ({ children }) => {
   };
 
   const uploadImage = async (image) => {
+    setImageURL("")
     try {
       const formData = new FormData();
       formData.append('courseImage', image);
       const response = await api.post('/courses/upload-image', formData);
       if (response.status === 201) {
         setImageURL(response.data.imageUrl)
+        setUploadSucessfull(true)
       }
     } catch (error) {
       console.log(error);
@@ -58,6 +63,10 @@ export const ApiStorage = ({ children }) => {
 
   const closeModalNewCourse = () => {
     setOpenModalNewCourse(false)
+  }
+
+  const hideUploadMessage = () => {
+    setUploadSucessfull(false)
   }
 
   const newModuleOrLesson = async (courseID) => {
@@ -148,10 +157,29 @@ export const ApiStorage = ({ children }) => {
         });
       if (response.status === 200) {
         alert("Aula adicionada ao módulo!");
+        setVideoURL("")
       }
     } catch (erro) {
       console.log(erro)
       alert("erro ao adicionar aula")
+    }
+  }
+
+  const editLessonData = async (courseID, moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
+    const url = `http://localhost:4000/courses/update-lesson/${courseID}/${moduleID}/${lessonID}`
+    try {
+      const response = await api.patch(url, { lessonTitle, lessonDescription, lessonVideoURL },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      if (response.status === 200) {
+        alert("Dados da aula editados com sucesso!");
+      }
+    } catch (erro) {
+      console.log(erro)
+      alert("erro ao atualizar dados da aula")
     }
   }
 
@@ -171,7 +199,10 @@ export const ApiStorage = ({ children }) => {
       addModuleToCourse,
       editModuleName,
       addLessonToModule,
+      editLessonData,
       openModalNewCourse,
+      uploadSucessful,
+      hideUploadMessage,
     }}>
       {children}
     </ApiContext.Provider>
