@@ -119,6 +119,24 @@ export const ApiStorage = ({ children }) => {
     }
   }
 
+  const editModuleName = async (courseID, moduleID, moduleName) => {
+    const url = `http://localhost:4000/courses/update-module/${courseID}/${moduleID}`
+    try {
+      const response = await api.patch(url, { moduleName },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      if (response.status === 200) {
+        alert("O nome do módulo foi atualizado!");
+      }
+    } catch (erro) {
+      console.log(erro)
+      alert("erro ao atualizar nome do módulo")
+    }
+  }
+
   const addLessonToModule = async (courseID, moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
     const url = `http://localhost:4000/courses/new-lesson/${courseID}/${moduleID}`
     try {
@@ -151,6 +169,7 @@ export const ApiStorage = ({ children }) => {
       closeModalNewCourse,
       addNewCourse,
       addModuleToCourse,
+      editModuleName,
       addLessonToModule,
       openModalNewCourse,
     }}>

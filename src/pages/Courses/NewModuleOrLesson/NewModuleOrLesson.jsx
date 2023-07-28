@@ -17,12 +17,14 @@ import InputDropZone from "../../../components/InputDropZone/InputDropZone";
 function NewModuleOrLesson() {
 
   const { openMenu } = useContext(GlobalContext)
-  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo } = useContext(ApiContext)
+  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo, editModuleName } = useContext(ApiContext)
   const [moduleModalIsOpen, setModuleModalIsOpen] = useState(false)
+  const [editModuleModal, setEditModuleModal] = useState(false)
   const [lessonModalIsOpen, setLessonModalIsOpen] = useState(false)
   const [course, setCourse] = useState({})
   const [modules, setModules] = useState([])
   const [moduleName, setModuleName] = useState("")
+  const [moduleNameEdited, setModuleNameEdited] = useState("")
   const [updateCounter, setUpdateCounter] = useState(0);
   const [currentModule, setCurrentModule] = useState("")
   const [lessonTitle, setLessonTitle] = useState("")
@@ -114,6 +116,29 @@ function NewModuleOrLesson() {
     }
   };
 
+  const openEditModuleModal = (moduleID, moduleName) => {
+    setModuleNameEdited(moduleName)
+    setCurrentModule(moduleID)
+    setEditModuleModal(true)
+  }
+
+  const editModule = async () => {
+    if (!course || !currentModule || !moduleNameEdited) {
+      alert("Faltam dados");
+      return;
+    }
+
+    try {
+      await editModuleName(course.courseID, currentModule, moduleNameEdited);
+
+      setEditModuleModal(false);
+      setUpdateCounter((prevCounter) => prevCounter + 1);
+    } catch (error) {
+      console.error("Erro ao alterar dados do módulo:", error);
+    }
+  };
+
+
 
   return (
     <NewModuleOrLessonContainer openmenu={openMenu ? "true" : "false"}>
@@ -124,6 +149,14 @@ function NewModuleOrLesson() {
         </div>
         <input type="text" onChange={(e) => setModuleName(e.target.value)} />
         <button onClick={newModule}>Adicionar módulo</button>
+      </NewModuleModal>
+      <NewModuleModal isopen={editModuleModal ? "true" : "false"}>
+        <div>
+          <span>Nome do módulo:</span>
+          <CloseIcon onClick={() => setEditModuleModal(false)} />
+        </div>
+        <input type="text" defaultValue={moduleNameEdited} onChange={(e) => setModuleNameEdited(e.target.value)} />
+        <button onClick={editModule}>Salvar alterações</button>
       </NewModuleModal>
       <NewLessonModal isopen={lessonModalIsOpen ? "true" : "false"}>
         <div>
@@ -179,7 +212,7 @@ function NewModuleOrLesson() {
                         <LessonsCounter>{`${module.lessons.length} aulas`}</LessonsCounter>
                         <ButtonsContainer>
                           <AddCircleIcon onClick={() => openLessonModal(module.moduleID)} />
-                          <EditIcon />
+                          <EditIcon onClick={() => openEditModuleModal(module.moduleID, module.moduleName)} />
                           <DeleteIcon />
                         </ButtonsContainer>
                       </ToolBar>
