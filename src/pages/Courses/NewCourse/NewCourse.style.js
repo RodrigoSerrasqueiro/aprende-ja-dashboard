@@ -43,3 +43,35 @@ export const CoursesContent = styled.div`
   gap: 15px;
 `;
 
+export const NewCourseButton = styled.button`
+    width: 80px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: ${({theme}) => theme.buttonColor};
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    column-gap: 10px;
+    margin-top: 20px;
+`;
+
+export const CloseButton = styled.button`
+    width: 80px;
+    height: 35px;
+    border-radius: 5px;
+    border: none;
+    outline: none;
+    cursor: pointer;
+    font-weight: bold;
+    background-color: ${({theme}) => theme.buttonColor};
+    color: white;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 20px;
+`;

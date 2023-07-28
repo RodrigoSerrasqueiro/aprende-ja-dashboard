@@ -1,6 +1,6 @@
 import { useContext, useState } from "react"
 import { ApiContext } from "../../contexts/ApiContext"
-import { FormContainer } from "./FormNewCourse.style";
+import { FormContainer, SubmitButton } from "./FormNewCourse.style";
 import InputDropZone from "../InputDropZone/InputDropZone";
 import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
 
@@ -77,7 +77,7 @@ function FormNewCourse() {
         <option value="Avançado">Avançado</option>
       </select>
 
-      <button onClick={handleCourse}>CADASTRAR CURSO</button>
+      <SubmitButton onClick={handleCourse}>Cadastrar curso</SubmitButton>
     </FormContainer>
   )
 }

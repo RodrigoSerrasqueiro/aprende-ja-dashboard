@@ -1,9 +1,10 @@
 import { useContext, useEffect } from "react"
 import { GlobalContext } from "../../../contexts/GlobalContext"
-import { CoursesContent, Modal, ModalContent, NewCourseContainer } from "./NewCourse.style"
+import { CloseButton, CoursesContent, Modal, ModalContent, NewCourseButton, NewCourseContainer } from "./NewCourse.style"
 import FormNewCourse from "../../../components/FormNewCourse/FormNewCourse"
 import { ApiContext } from "../../../contexts/ApiContext"
 import CourseCard from "../../../components/CourseCard/CourseCard"
+import AddBoxIcon from '@mui/icons-material/AddBox';
 
 
 function NewCourse() {
@@ -22,12 +23,15 @@ function NewCourse() {
 
       <Modal openmodal={openModalNewCourse ? "true" : "false"}>
         <ModalContent>
-          <button onClick={closeModalNewCourse}>Fechar</button>
+          <CloseButton onClick={closeModalNewCourse}>Fechar</CloseButton>
           <FormNewCourse />
         </ModalContent>
       </Modal>
 
-      <button style={{ width: "40px" }} onClick={addNewCourse}>Novo</button>
+      <NewCourseButton onClick={addNewCourse}>
+        <AddBoxIcon />
+        Novo
+      </NewCourseButton>
       {courses && courses.length > 0 ?
         <CoursesContent>
           {courses.slice(0).reverse().map((course, index) => (
@@ -40,7 +44,7 @@ function NewCourse() {
           ))}
         </CoursesContent>
         :
-        <h1>NÃO HÁ CURSOS CADASTRADOS</h1>
+        <h1 style={{ marginTop: "30px" }}>NÃO HÁ CURSOS CADASTRADOS</h1>
       }
     </NewCourseContainer>
   )
