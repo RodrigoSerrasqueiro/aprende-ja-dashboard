@@ -6,7 +6,7 @@ import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
 
 function FormNewCourse() {
 
-  const { createCourse, uploadImage, imageURL } = useContext(ApiContext)
+  const { createCourse, uploadImage, imageURL, uploadSucessful, hideUploadMessage } = useContext(ApiContext)
 
   const [courseType, setCourseType] = useState("");
   const [courseSubType, setCourseSubType] = useState("");
@@ -25,10 +25,31 @@ function FormNewCourse() {
     uploadImage(image)
   }
 
+  const handleCourse = async () => {
+    if (!courseType || !courseSubType || !courseName || !imageURL || !courseDescription || !courseWorkload || !teacherName || !courseLevel) {
+      alert("Faltam dados");
+      return;
+    }
 
+    try {
+      await createCourse(courseType, courseSubType, courseName, imageURL, courseDescription, courseWorkload, teacherName, courseLevel);
 
-  const handleCourse = () => {
-    createCourse(courseType, courseSubType, courseName, imageURL, courseDescription, courseWorkload, teacherName, courseLevel)
+      clearInputs()
+      hideUploadMessage()
+      setUploadIsActive(false)
+    } catch (error) {
+      console.error("Erro ao adicionar o curso:", error);
+    }
+  };
+
+  const clearInputs = () => {
+    setCourseType("")
+    setCourseSubType("")
+    setCourseName("")
+    setCourseWorkload("")
+    setTeacherName("")
+    setCourseDescription("")
+    setCourseLevel("")
   }
 
   return (
@@ -51,23 +72,23 @@ function FormNewCourse() {
 
 
       <span>NOME DO CURSO</span>
-      <input type="text" onChange={(e) => setCourseName(e.target.value)} />
+      <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} />
 
       <span>IMAGEM DO CURSO</span>
       <InputDropZone sendFile={sendImage} acceptedFileType="image/*" />
-      {!imageURL && <RotateLeftRoundedIcon style={{ display: uploadIsActive ? 'block' : 'none' }} />}
-      {imageURL && <span>Upload realizado com sucesso!</span>}
+      {!uploadSucessful && <RotateLeftRoundedIcon style={{ display: uploadIsActive ? 'block' : 'none' }} />}
+      {uploadSucessful && <span>Upload realizado com sucesso!</span>}
 
       <span>DESCRIÇÃO DO CURSO</span>
-      <input type="text" onChange={(e) => setCourseDescription(e.target.value)} />
+      <input type="text" value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)} />
 
       <span>CARGA HORÁRIA DO CURSO</span>
       <div>
-        <input type="number" onChange={(e) => setCourseWorkload(e.target.value)} /> horas
+        <input type="number" value={courseWorkload} onChange={(e) => setCourseWorkload(e.target.value)} /> horas
       </div>
 
       <span>PROFESSOR(A) DO CURSO</span>
-      <input type="text" onChange={(e) => setTeacherName(e.target.value)} />
+      <input type="text" value={teacherName} onChange={(e) => setTeacherName(e.target.value)} />
 
       <span>NÍVEL DO CURSO</span>
       <select value={courseLevel} onChange={(e) => setCourseLevel(e.target.value)}>

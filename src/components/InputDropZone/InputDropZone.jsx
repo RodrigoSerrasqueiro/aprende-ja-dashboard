@@ -1,11 +1,12 @@
 import { useDropzone } from "react-dropzone";
 import { DropzoneContainer, ImagePreview, VideoPreview } from "./InputDropZone.style";
-import { useState } from "react";
+import { useContext } from "react";
+import { ApiContext } from "../../contexts/ApiContext";
 
 // eslint-disable-next-line react/prop-types
 function InputDropZone({ sendFile, acceptedFileType }) {
 
-  const [imagePreview, setImagePreview] = useState(null);
+  const { imagePreview, handleImagePreview } = useContext(ApiContext)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: acceptedFileType,
@@ -16,7 +17,7 @@ function InputDropZone({ sendFile, acceptedFileType }) {
 
       // Gerar URL temporária para a pré-visualização da imagem ou vídeo
       const objectUrl = URL.createObjectURL(file);
-      setImagePreview(objectUrl);
+      handleImagePreview(objectUrl);
 
     },
   });

@@ -11,11 +11,13 @@ export const ApiStorage = ({ children }) => {
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
   const [uploadSucessful, setUploadSucessfull] = useState(false)
+  const [imagePreview, setImagePreview] = useState(null);
 
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
   const uploadVideo = async (video) => {
     setVideoURL("")
+    setUploadSucessfull(false)
     try {
       const formData = new FormData();
       formData.append('video', video);
@@ -33,6 +35,7 @@ export const ApiStorage = ({ children }) => {
 
   const uploadImage = async (image) => {
     setImageURL("")
+    setUploadSucessfull(false)
     try {
       const formData = new FormData();
       formData.append('courseImage', image);
@@ -73,6 +76,10 @@ export const ApiStorage = ({ children }) => {
     sessionStorage.setItem("courseID", courseID);
   }
 
+  const handleImagePreview = (URL) => {
+    setImagePreview(URL)
+  }
+
   const createCourse = async (
     courseType,
     courseSubType,
@@ -103,6 +110,8 @@ export const ApiStorage = ({ children }) => {
         alert("Curso cadastrado com sucesso!");
         getCourses()
         closeModalNewCourse()
+        setImageURL("")
+        setImagePreview(null)
       }
     } catch (error) {
       console.log(error);
@@ -158,6 +167,7 @@ export const ApiStorage = ({ children }) => {
       if (response.status === 200) {
         alert("Aula adicionada ao módulo!");
         setVideoURL("")
+        setImagePreview(null)
       }
     } catch (erro) {
       console.log(erro)
@@ -203,6 +213,8 @@ export const ApiStorage = ({ children }) => {
       openModalNewCourse,
       uploadSucessful,
       hideUploadMessage,
+      imagePreview,
+      handleImagePreview,
     }}>
       {children}
     </ApiContext.Provider>
