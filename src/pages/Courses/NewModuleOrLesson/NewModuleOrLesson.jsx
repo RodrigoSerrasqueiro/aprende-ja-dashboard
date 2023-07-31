@@ -111,12 +111,19 @@ function NewModuleOrLesson() {
     setEditLessonModal(false)
   }
 
-  const sendVideoFile = (video) => {
+  const sendVideoFile = async (video) => {
     if (!video) {
       return;
     }
-    uploadVideo(video)
-    setIsLoading(true)
+    try {
+      setIsLoading(true)
+      await uploadVideo(video)
+
+
+    } catch (error) {
+      setIsLoading(false)
+      console.log(error)
+    }
   }
 
   const newLesson = async () => {
