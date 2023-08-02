@@ -11,13 +11,17 @@ export const ApiStorage = ({ children }) => {
   const [lessonID, setLessonID] = useState("")
   const [courses, setCourses] = useState([])
   const [uploadSucessful, setUploadSucessfull] = useState(false)
+  const [uploadFailed, setUploadFailed] = useState(false)
+  const [isLoading, setIsLoading] = useState(false)
   const [imagePreview, setImagePreview] = useState(null);
 
   const [openModalNewCourse, setOpenModalNewCourse] = useState(false)
 
   const uploadVideo = async (video) => {
     setVideoURL("")
+    setIsLoading(true)
     setUploadSucessfull(false)
+    setUploadFailed(false)
     try {
       const formData = new FormData();
       formData.append('video', video);
@@ -26,16 +30,20 @@ export const ApiStorage = ({ children }) => {
         setVideoURL(response.data.videoData.video_player)
         setLessonID(response.data.videoData.id)
         setUploadSucessfull(true)
+        setIsLoading(false)
       }
     } catch (error) {
       console.log(error);
-      alert('Não foi possível fazer o upload do vídeo!');
+      setUploadFailed(true)
+      setIsLoading(false)
     }
   };
 
   const uploadImage = async (image) => {
     setImageURL("")
+    setIsLoading(true)
     setUploadSucessfull(false)
+    setUploadFailed(false)
     try {
       const formData = new FormData();
       formData.append('courseImage', image);
@@ -43,10 +51,12 @@ export const ApiStorage = ({ children }) => {
       if (response.status === 201) {
         setImageURL(response.data.imageUrl)
         setUploadSucessfull(true)
+        setIsLoading(false)
       }
     } catch (error) {
       console.log(error);
-      alert('Não foi possível fazer o upload do vídeo!');
+      setUploadFailed(true)
+      setIsLoading(false)
     }
   };
 
@@ -70,6 +80,7 @@ export const ApiStorage = ({ children }) => {
 
   const hideUploadMessage = () => {
     setUploadSucessfull(false)
+    setUploadFailed(false)
   }
 
   const newModuleOrLesson = async (courseID) => {
@@ -78,6 +89,10 @@ export const ApiStorage = ({ children }) => {
 
   const handleImagePreview = (URL) => {
     setImagePreview(URL)
+  }
+
+  const resetImagePreview = () => {
+    setImagePreview(null)
   }
 
   const createCourse = async (
@@ -112,6 +127,7 @@ export const ApiStorage = ({ children }) => {
         closeModalNewCourse()
         setImageURL("")
         setImagePreview(null)
+        hideUploadMessage()
       }
     } catch (error) {
       console.log(error);
@@ -211,10 +227,13 @@ export const ApiStorage = ({ children }) => {
       addLessonToModule,
       editLessonData,
       openModalNewCourse,
-      uploadSucessful,
       hideUploadMessage,
       imagePreview,
       handleImagePreview,
+      resetImagePreview,
+      uploadFailed,
+      uploadSucessful,
+      isLoading,
     }}>
       {children}
     </ApiContext.Provider>

@@ -6,7 +6,7 @@ import RotateLeftRoundedIcon from '@mui/icons-material/RotateLeftRounded';
 
 function FormNewCourse() {
 
-  const { createCourse, uploadImage, imageURL, uploadSucessful, hideUploadMessage } = useContext(ApiContext)
+  const { createCourse, uploadImage, imageURL, uploadSucessful, uploadFailed, isLoading, hideUploadMessage } = useContext(ApiContext)
 
   const [courseType, setCourseType] = useState("");
   const [courseSubType, setCourseSubType] = useState("");
@@ -15,15 +15,6 @@ function FormNewCourse() {
   const [courseWorkload, setCourseWorkload] = useState("");
   const [teacherName, setTeacherName] = useState("");
   const [courseLevel, setCourseLevel] = useState("");
-  const [uploadIsActive, setUploadIsActive] = useState(false)
-
-  const sendImage = (image) => {
-    if (!image) {
-      return;
-    }
-    setUploadIsActive(true)
-    uploadImage(image)
-  }
 
   const handleCourse = async () => {
     if (!courseType || !courseSubType || !courseName || !imageURL || !courseDescription || !courseWorkload || !teacherName || !courseLevel) {
@@ -36,11 +27,12 @@ function FormNewCourse() {
 
       clearInputs()
       hideUploadMessage()
-      setUploadIsActive(false)
     } catch (error) {
       console.error("Erro ao adicionar o curso:", error);
     }
   };
+
+
 
   const clearInputs = () => {
     setCourseType("")
@@ -75,9 +67,10 @@ function FormNewCourse() {
       <input type="text" value={courseName} onChange={(e) => setCourseName(e.target.value)} />
 
       <span>IMAGEM DO CURSO</span>
-      <InputDropZone sendFile={sendImage} acceptedFileType="image/*" />
-      {!uploadSucessful && <RotateLeftRoundedIcon style={{ display: uploadIsActive ? 'block' : 'none' }} />}
+      <InputDropZone sendFile={uploadImage} acceptedFileType="image/*" />
+      {!uploadSucessful && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
       {uploadSucessful && <span>Upload realizado com sucesso!</span>}
+      {uploadFailed && <span style={{ color: "red" }}>O upload falhou! Tente novamente.</span>}
 
       <span>DESCRIÇÃO DO CURSO</span>
       <input type="text" value={courseDescription} onChange={(e) => setCourseDescription(e.target.value)} />

@@ -6,12 +6,13 @@ import { ApiContext } from "../../contexts/ApiContext";
 // eslint-disable-next-line react/prop-types
 function InputDropZone({ sendFile, acceptedFileType }) {
 
-  const { imagePreview, handleImagePreview } = useContext(ApiContext)
+  const { imagePreview, handleImagePreview, resetImagePreview } = useContext(ApiContext)
 
   const { getRootProps, getInputProps, isDragActive } = useDropzone({
     accept: acceptedFileType,
     maxFiles: 1,
     onDrop: (acceptedFiles) => {
+      resetImagePreview()
       const file = acceptedFiles[0];
       sendFile(file);
 
