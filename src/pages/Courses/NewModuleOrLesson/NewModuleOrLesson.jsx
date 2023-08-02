@@ -17,7 +17,7 @@ import InputDropZone from "../../../components/InputDropZone/InputDropZone";
 function NewModuleOrLesson() {
 
   const { openMenu } = useContext(GlobalContext)
-  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo, editModuleName, editLessonData, uploadSucessful, hideUploadMessage } = useContext(ApiContext)
+  const { addModuleToCourse, addLessonToModule, lessonID, videoURL, uploadVideo, editModuleName, editLessonData, uploadSucessful, uploadFailed, hideUploadMessage, isLoading, resetImagePreview } = useContext(ApiContext)
   const [moduleModalIsOpen, setModuleModalIsOpen] = useState(false)
   const [editModuleModal, setEditModuleModal] = useState(false)
   const [lessonModalIsOpen, setLessonModalIsOpen] = useState(false)
@@ -32,7 +32,6 @@ function NewModuleOrLesson() {
   const [lessonTitle, setLessonTitle] = useState("")
   const [lessonDescription, setLessonDescription] = useState("")
   const [lessonData, setLessonData] = useState({})
-  const [isLoading, setIsLoading] = useState(false)
   const [editVideo, setEditVideo] = useState(true)
 
 
@@ -69,6 +68,57 @@ function NewModuleOrLesson() {
     }));
   };
 
+  //funções abrir modal
+  const openEditModuleModal = (moduleID, moduleName) => {
+    setModuleNameEdited(moduleName)
+    setCurrentModule(moduleID)
+    setEditModuleModal(true)
+  }
+
+  const openLessonModal = (moduleID) => {
+    setLessonModalIsOpen(true)
+    setCurrentModule(moduleID)
+  }
+
+  const openEditLessonModal = (moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
+    hideUploadMessage()
+    setCurrentModule(moduleID)
+    setCurrentLesson(lessonID)
+    setLessonData({ lessonTitle: lessonTitle, lessonDescription: lessonDescription, lessonVideoURL: lessonVideoURL })
+    setEditLessonModal(true)
+  }
+
+  //funções fechar modal
+  const closeNewModuleModal = () => {
+    setModuleModalIsOpen(false)
+    clearInputs()
+  }
+
+  const closeEditModuleModal = () => {
+    setEditModuleModal(false)
+    clearInputs()
+  }
+
+  const closeNewLessonModal = () => {
+    setLessonModalIsOpen(false)
+    clearInputs()
+  }
+
+  const closeEditLessonModal = () => {
+    setEditLessonModal(false)
+    clearInputs()
+  }
+
+  //limpar inputs
+  const clearInputs = () => {
+    setLessonTitle("")
+    setLessonDescription("")
+    setModuleName("")
+    setModuleNameEdited("")
+    resetImagePreview()
+    hideUploadMessage()
+  }
+
   const newModule = async () => {
     if (!moduleName) {
       alert("De um nome ao novo módulo!");
@@ -85,46 +135,6 @@ function NewModuleOrLesson() {
     }
   };
 
-  const openLessonModal = (moduleID) => {
-    setIsLoading(false)
-    setLessonModalIsOpen(true)
-    setCurrentModule(moduleID)
-    hideUploadMessage()
-  }
-
-  const closeNewModuleModal = () => {
-    setModuleModalIsOpen(false)
-    setModuleName("")
-  }
-
-  const closeEditModuleModal = () => {
-    setEditModuleModal(false)
-  }
-
-  const closeNewLessonModal = () => {
-    setLessonModalIsOpen(false)
-    setLessonTitle("")
-    setLessonDescription("")
-  }
-
-  const closeEditLessonModal = () => {
-    setEditLessonModal(false)
-  }
-
-  const sendVideoFile = async (video) => {
-    if (!video) {
-      return;
-    }
-    try {
-      setIsLoading(true)
-      await uploadVideo(video)
-
-
-    } catch (error) {
-      setIsLoading(false)
-      console.log(error)
-    }
-  }
 
   const newLesson = async () => {
     if (!course || !currentModule || !lessonID || !lessonTitle || !lessonDescription || !videoURL) {
@@ -137,26 +147,12 @@ function NewModuleOrLesson() {
 
       setUpdateCounter((prevCounter) => prevCounter + 1);
       closeNewLessonModal()
-
     } catch (error) {
       console.error("Erro ao adicionar a aula:", error);
     }
   };
 
-  const openEditModuleModal = (moduleID, moduleName) => {
-    setModuleNameEdited(moduleName)
-    setCurrentModule(moduleID)
-    setEditModuleModal(true)
-  }
 
-  const openEditLessonModal = (moduleID, lessonID, lessonTitle, lessonDescription, lessonVideoURL) => {
-    hideUploadMessage()
-    setIsLoading(false)
-    setCurrentModule(moduleID)
-    setCurrentLesson(lessonID)
-    setLessonData({ lessonTitle: lessonTitle, lessonDescription: lessonDescription, lessonVideoURL: lessonVideoURL })
-    setEditLessonModal(true)
-  }
 
   const editModule = async () => {
     if (!course || !currentModule || !moduleNameEdited) {
@@ -167,8 +163,8 @@ function NewModuleOrLesson() {
     try {
       await editModuleName(course.courseID, currentModule, moduleNameEdited);
 
-      closeEditModuleModal()
       setUpdateCounter((prevCounter) => prevCounter + 1);
+      closeEditModuleModal()
     } catch (error) {
       console.error("Erro ao alterar dados do módulo:", error);
     }
@@ -187,8 +183,8 @@ function NewModuleOrLesson() {
         await editLessonData(course.courseID, currentModule, currentLesson, lessonData.lessonTitle, lessonData.lessonDescription, videoURL);
       }
 
-      closeEditLessonModal()
       setUpdateCounter((prevCounter) => prevCounter + 1);
+      closeEditLessonModal()
     } catch (error) {
       console.error("Erro ao alterar dados da aula:", error);
     }
@@ -231,9 +227,10 @@ function NewModuleOrLesson() {
         <input type="text" value={lessonDescription} maxLength={300} onChange={(e) => setLessonDescription(e.target.value)} />
 
         <span>Selecione o vídeo da aula:</span>
-        <InputDropZone sendFile={sendVideoFile} acceptedFileType="video/*" />
-        {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
+        <InputDropZone sendFile={uploadVideo} acceptedFileType="video/*" />
+        {!uploadSucessful && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
         {uploadSucessful && <span>Upload realizado com sucesso!</span>}
+        {uploadFailed && <span>O upload falhou! Tente novamente.</span>}
         <button onClick={newLesson}>ADICIONAR AULA</button>
       </NewLessonModal>
 
@@ -244,16 +241,17 @@ function NewModuleOrLesson() {
           <CloseIcon onClick={closeEditLessonModal} />
         </div>
         <span>Título da aula:</span>
-        <input type="text" value={lessonData.lessonTitle} onChange={(e) => setLessonData((data) => ({ ...data, lessonTitle: e.target.value }))} />
+        <input type="text" value={lessonData.lessonTitle || ""} onChange={(e) => setLessonData((data) => ({ ...data, lessonTitle: e.target.value }))} />
 
         <span>Descrição da aula:</span>
-        <input type="text" value={lessonData.lessonDescription} maxLength={300} onChange={(e) => setLessonData((data) => ({ ...data, lessonDescription: e.target.value }))} />
+        <input type="text" value={lessonData.lessonDescription || ""} maxLength={300} onChange={(e) => setLessonData((data) => ({ ...data, lessonDescription: e.target.value }))} />
 
         <button onClick={() => setEditVideo(!editVideo)}>{editVideo ? "Alterar video da aula" : "Cancelar"}</button>
-        {!editVideo && <InputDropZone sendFile={sendVideoFile} acceptedFileType="video/*" />}
+        {!editVideo && <InputDropZone sendFile={uploadVideo} acceptedFileType="video/*" />}
 
-        {!videoURL && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
+        {!uploadSucessful && <RotateLeftRoundedIcon style={{ display: isLoading ? 'block' : 'none' }} />}
         {uploadSucessful && <span>Upload realizado com sucesso!</span>}
+        {uploadFailed && <span>O upload falhou! Tente novamente.</span>}
         <button onClick={editLesson}>Salvar alterações</button>
       </NewLessonModal>
 

@@ -184,6 +184,7 @@ export const ApiStorage = ({ children }) => {
         alert("Aula adicionada ao módulo!");
         setVideoURL("")
         setImagePreview(null)
+        hideUploadMessage()
       }
     } catch (erro) {
       console.log(erro)
