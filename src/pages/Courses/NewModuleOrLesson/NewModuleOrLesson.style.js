@@ -13,6 +13,7 @@ export const NewModuleOrLessonContainer = styled.div`
 export const CourseContent = styled.div`
   display: flex;
   width: 100%;
+  min-height: calc(100vh - 100px);
   padding-right: 10px;
 `;
 
