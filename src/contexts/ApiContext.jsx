@@ -203,10 +203,34 @@ export const ApiStorage = ({ children }) => {
         });
       if (response.status === 200) {
         alert("Dados da aula editados com sucesso!");
+        setImagePreview(null)
+        setVideoURL("")
+        hideUploadMessage()
       }
     } catch (erro) {
       console.log(erro)
       alert("erro ao atualizar dados da aula")
+    }
+  }
+
+  const editCourse = async (courseID, courseType, courseSubType, courseName, courseImage, courseDescription, courseWorkload, teacherName, courseLevel) => {
+    const url = `http://localhost:4000/courses/update-course/${courseID}`
+    try {
+      const response = await api.patch(url, { courseType, courseSubType, courseName, courseImage, courseDescription, courseWorkload, teacherName, courseLevel },
+        {
+          headers: {
+            'Content-Type': 'application/json'
+          }
+        });
+      if (response.status === 200) {
+        alert("Dados do curso editados com sucesso!");
+        setImagePreview(null)
+        setImageURL("")
+        hideUploadMessage()
+      }
+    } catch (erro) {
+      console.log(erro)
+      alert("erro ao atualizar dados do curso")
     }
   }
 
@@ -235,6 +259,7 @@ export const ApiStorage = ({ children }) => {
       uploadFailed,
       uploadSucessful,
       isLoading,
+      editCourse,
     }}>
       {children}
     </ApiContext.Provider>

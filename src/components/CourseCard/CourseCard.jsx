@@ -7,7 +7,7 @@ import { ApiContext } from "../../contexts/ApiContext";
 import { useContext } from "react";
 import { useNavigate } from "react-router-dom";
 
-function CourseCard(props) {
+function CourseCard({ courseImage, courseName, courseID, openEditCourseModal }) {
 
   const { newModuleOrLesson } = useContext(ApiContext)
 
@@ -15,16 +15,18 @@ function CourseCard(props) {
 
   return (
     <CardCourseContainer>
-      <CourseIMG src={props.courseImage} alt="imagem do curso" />
-      <CourseName>{props.courseName}</CourseName>
+      <CourseIMG src={courseImage} alt="imagem do curso" />
+      <CourseName>{courseName}</CourseName>
       <ButtonsContainer>
         <AddCircleIcon
           onClick={() => {
-            newModuleOrLesson(props.courseID)
+            newModuleOrLesson(courseID)
             navigate('/new-module-or-lesson')
           }}
         />
-        <EditIcon />
+        <EditIcon
+          onClick={() => openEditCourseModal()}
+        />
         <DeleteIcon />
       </ButtonsContainer>
     </CardCourseContainer>
